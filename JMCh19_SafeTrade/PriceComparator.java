@@ -6,6 +6,7 @@
 public class PriceComparator implements java.util.Comparator<TradeOrder>
 {
 
+    //Testing draft-Shams
     // TODO complete class
 
 }
