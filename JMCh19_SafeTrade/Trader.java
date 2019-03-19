@@ -1,6 +1,6 @@
 import java.lang.reflect.*;
 import java.util.*;
-
+//TODO BY MR.FULK
 /**
  * Represents a stock trader.
  */
