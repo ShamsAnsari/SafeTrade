@@ -1,0 +1,2 @@
+# SafeTrade
+Stock Market project
