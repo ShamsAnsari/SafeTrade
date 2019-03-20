@@ -1,7 +1,15 @@
 
-// TODO BY SHAMS ANSARI
 /**
  * A price comparator for trade orders.
+ *
+ * @author Shams Ansari
+ * @author Shams Ansari
+ * @author Shams Ansari
+ * @version Mar 20, 2019
+ * @author Period: 4
+ * @author Assignment: JMCh19_SafeTrade
+ *
+ * @author Sources: TODO
  */
 public class PriceComparator implements java.util.Comparator<TradeOrder>
 {
@@ -69,15 +77,11 @@ public class PriceComparator implements java.util.Comparator<TradeOrder>
             {
                 return (int)Math
                     .round( o1.getPrice() * 100 - o2.getPrice() * 100 );
-                // TODO CHECK
-                // Why is ascending cents1 - cents2?
-
             }
             else
             {
                 return (int)Math
                     .round( o2.getPrice() * 100 - o1.getPrice() * 100 );
-                // TODO CHECK
             }
 
         }

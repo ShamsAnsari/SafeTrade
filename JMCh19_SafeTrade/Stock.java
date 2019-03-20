@@ -130,6 +130,7 @@ public class Stock
      * stuck when the top buy order and sell order are both limit orders and the
      * ask price is higher than the bid price.)
      */
+    @SuppressWarnings("deprecation")
     protected void executeOrders()
     {
         while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
@@ -181,6 +182,9 @@ public class Stock
                     sellTrader,
                     buyTrader );
             }
+            /*
+             * 
+             */
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= lastPrice ) )
             {
@@ -191,6 +195,9 @@ public class Stock
                     buyTrader );
 
             }
+            /*
+             * 
+             */
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
                 execHelper( sharesSell,
