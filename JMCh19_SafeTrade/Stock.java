@@ -3,9 +3,18 @@ import java.lang.reflect.*;
 import java.text.DecimalFormat;
 
 
-// TODO BY SHAMS ANSARI
 /**
  * Represents a stock in the SafeTrade project
+ * 
+ *
+ * @author Shams Ansari
+ * @author Shams Ansari
+ * @author Shams Ansari
+ * @version Mar 20, 2019
+ * @author Period: TODO
+ * @author Assignment: JMCh19_SafeTrade
+ *
+ * @author Sources: TODO
  */
 public class Stock
 {
@@ -116,14 +125,49 @@ public class Stock
             money.format( sellOrder.getPrice() ) );
         double buyOrderPrice = new Double(
             money.format( buyOrder.getPrice() ) );
+        int sharesSell = sellOrder.getShares();
+        int sharesBuy = sellOrder.getShares();
 
         if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
-            && ( buyOrderPrice >= sellOrderPrice ) )
+            && ( buyOrderPrice >= sellOrderPrice ) )// Instruction reversed
         {
-            
+            int smallerShares = Math.min( sharesSell, sharesBuy );
+            sellOrder = sellOrders.remove();
+            buyOrder = buyOrders.remove();
+            sellOrder.subtractShares(smallerShares);
+            buyOrder.subtractShares( smallerShares ); 
+            addToQueue(buyOrder, sellOrder);
         }
-       // else if((sellOrder))
-        //TODO
+
+        else if ( sellOrder.isLimit() && buyOrder.isMarket() )
+        {
+
+        }
+        else if ( sellOrder.isMarket() && buyOrder.isBuy() )
+        {
+
+        }
+        else if ( sellOrder.isMarket() && buyOrder.isMarket() )
+        {
+
+        }
+        
+        
+
+    }
+
+
+    // not part
+    private void addToQueue(TradeOrder buyOrder, TradeOrder sellOrder)
+    {
+        if(sellOrder.getShares() != 0)
+        {
+            sellOrders.add( sellOrder );
+        }
+        if(buyOrder.getShares() != 0)
+        {
+            buyOrders.add( buyOrder );
+        }
     }
 
 

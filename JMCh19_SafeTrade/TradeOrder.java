@@ -126,8 +126,12 @@ public class TradeOrder
 
     public boolean isSell()
     {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stub by Shams A.
         return false;
+    }
+    public void subtractShares(int shares)
+    {
+        //TODO Auto-generated method stub by Shams A.
     }
 
 
