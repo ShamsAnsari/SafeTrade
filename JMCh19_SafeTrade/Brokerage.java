@@ -82,7 +82,25 @@ public class Brokerage implements Login
     @Override
     public int login( String name, String password )
     {
-        // TODO Auto-generated method stub Shams A.
+        // TODO Auto-generated method stub by Shams A.
         return 0;
+    }
+
+    public void placeOrder( TradeOrder order )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
+    }
+
+    public void logout( Trader trader )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
+    }
+
+    public void getQuote( String symbol, Trader trader )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
     }
 }

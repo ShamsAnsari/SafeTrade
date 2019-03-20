@@ -136,99 +136,81 @@ public class Stock
         {
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
-            
+
             Trader sellTrader = sellOrder.getTrader();
             Trader buyTrader = buyOrder.getTrader();
-            
+
             double sellOrderPrice = new Double(
                 money.format( sellOrder.getPrice() ) );
             double buyOrderPrice = new Double(
                 money.format( buyOrder.getPrice() ) );
-            
+
             int sharesSell = sellOrder.getShares();
             int sharesBuy = sellOrder.getShares();
 
+            /*
+             * If the seller wants to sell at a certain price and the buy wants
+             * to buy at a certain price. Then checks if the buyers' price is
+             * greater than than the sellers' price. Because a sale can only
+             * happen if the buying price is greater than or equal to the
+             * selling price.
+             * 
+             */
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
-                int smallerShares = Math.min( sharesSell, sharesBuy );
-                sellOrder = sellOrders.remove();
-                buyOrder = buyOrders.remove();
-                sellOrder.subtractShares( smallerShares );
-                buyOrder.subtractShares( smallerShares );
-                addToQueue( buyOrder, sellOrder );
-                lastPrice = sellOrder.getPrice();
-                volume += smallerShares;
-                loPrice = ( loPrice > sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-                hiPrice = ( loPrice < sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-                    sellTrader.receiveMesssage()
-
+                execHelper( sharesSell,
+                    sharesBuy,
+                    sellOrderPrice,
+                    sellTrader,
+                    buyTrader );
             }
+            /*
+             * If the seller wants to sell at a certain price and the buyer
+             * wants to sell at the market price("last sale price"). Then checks
+             * that the selling price is lower than or equal the market price.
+             * Because the sale can only be made if the buying price is greater
+             * than or equal to the selling price.
+             */
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice <= lastPrice ) )
             {
-                int smallerShares = Math.min( sharesSell, sharesBuy );
-                sellOrder = sellOrders.remove();
-                buyOrder = buyOrders.remove();
-                sellOrder.subtractShares( smallerShares );
-                buyOrder.subtractShares( smallerShares );
-                addToQueue( buyOrder, sellOrder );
-                lastPrice = sellOrder.getPrice();
-                volume += smallerShares;
-                loPrice = ( loPrice > sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-                hiPrice = ( loPrice < sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-
+                execHelper( sharesSell,
+                    sharesBuy,
+                    sellOrderPrice,
+                    sellTrader,
+                    buyTrader );
             }
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= lastPrice ) )
             {
-                int smallerShares = Math.min( sharesSell, sharesBuy );
-                sellOrder = sellOrders.remove();
-                buyOrder = buyOrders.remove();
-                sellOrder.subtractShares( smallerShares );
-                buyOrder.subtractShares( smallerShares );
-                addToQueue( buyOrder, sellOrder );
-                lastPrice = sellOrder.getPrice();
-                volume += smallerShares;
-                loPrice = ( loPrice > sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-                hiPrice = ( loPrice < sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
+                execHelper( sharesSell,
+                    sharesBuy,
+                    buyOrderPrice,
+                    sellTrader,
+                    buyTrader );
 
             }
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
-                int smallerShares = Math.min( sharesSell, sharesBuy );
-                sellOrder = sellOrders.remove();
-                buyOrder = buyOrders.remove();
-                sellOrder.subtractShares( smallerShares );
-                buyOrder.subtractShares( smallerShares );
-                addToQueue( buyOrder, sellOrder );
-                lastPrice = sellOrder.getPrice();
-                volume += smallerShares;
-                loPrice = ( loPrice > sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
-                hiPrice = ( loPrice < sellOrder.getPrice() )
-                    ? sellOrder.getPrice()
-                    : loPrice;
+                execHelper( sharesSell,
+                    sharesBuy,
+                    lastPrice,
+                    sellTrader,
+                    buyTrader );
             }
         }
 
     }
 
 
-    // not part of instruc, helper method
+    /**
+     * 
+     * Adds the orders back to the respective queues if they are not empty
+     * 
+     * @param buyOrder
+     * @param sellOrder
+     */
     private void addToQueue( TradeOrder buyOrder, TradeOrder sellOrder )
     {
         if ( sellOrder.getShares() != 0 )
@@ -239,6 +221,47 @@ public class Stock
         {
             buyOrders.add( buyOrder );
         }
+    }
+
+
+    private void execHelper(
+        int sharesSell,
+        int sharesBuy,
+        double sellingPrice,
+        Trader sellTrader,
+        Trader buyTrader )
+    {
+        // Finds the stocks of the lower trade, b/c thats how many you
+        // can trade
+        int smallerShares = Math.min( sharesSell, sharesBuy );
+
+        // Removes the orders from the queue
+        TradeOrder sellOrder = sellOrders.remove();
+        TradeOrder buyOrder = buyOrders.remove();
+
+        // Subtracts the smaller # of shares from both, one will be left
+        // 0
+        sellOrder.subtractShares( smallerShares );
+        buyOrder.subtractShares( smallerShares );
+
+        // Adds the orders back to their respective queues iff the have
+        // greater than 0 shares in the order
+        addToQueue( buyOrder, sellOrder );
+
+        // Updates the day's high's and lows
+        lastPrice = sellOrder.getPrice();
+        volume += smallerShares;
+        loPrice = ( loPrice > sellingPrice ) ? sellingPrice : loPrice;
+        hiPrice = ( loPrice < sellingPrice ) ? sellingPrice : loPrice;
+
+        // Sends a messages both traders
+        sellTrader.receiveMessage(
+            "You sold: " + smallerShares + " " + stockSymbol + " at "
+                + sellingPrice + " amt " + smallerShares * sellingPrice );
+        buyTrader.receiveMessage(
+            "You bought: " + smallerShares + " " + stockSymbol + " at "
+                + sellingPrice + " amt " + smallerShares * sellingPrice );
+
     }
 
 
