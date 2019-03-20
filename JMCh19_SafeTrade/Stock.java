@@ -104,13 +104,26 @@ public class Stock
         return quote;
     }
 
+
     /**
-     * 
      * TODO Write your method description here.
      */
     protected void executeOrders()
     {
+        TradeOrder sellOrder = sellOrders.peek();
+        TradeOrder buyOrder = buyOrders.peek();
+        double sellOrderPrice = new Double(
+            money.format( sellOrder.getPrice() ) );
+        double buyOrderPrice = new Double(
+            money.format( buyOrder.getPrice() ) );
 
+        if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
+            && ( buyOrderPrice >= sellOrderPrice ) )
+        {
+            
+        }
+       // else if((sellOrder))
+        //TODO
     }
 
 
