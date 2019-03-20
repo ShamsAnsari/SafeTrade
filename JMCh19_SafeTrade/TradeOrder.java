@@ -51,4 +51,22 @@ public class TradeOrder
 
         return str + "]";
     }
+
+    public boolean isMarket()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return false;
+    }
+
+    public boolean isLimit()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return false;
+    }
+
+    public int getPrice()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return 0;
+    }
 }
