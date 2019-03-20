@@ -7,8 +7,9 @@ import java.util.*;
  * by a stock symbol. It has methods to list a new stock, request a quote for a
  * given stock symbol, and to place a specified trade order.
  * 
- * @author
- * @author
+ * @author Shams Ansari
+ * @author Elisa Yang
+ * @author Leo Shaw
  * @version Mar 20, 2019
  * @author Period: TODO
  * @author Assignment: JMCh19_SafeTrade
@@ -116,25 +117,46 @@ public class Brokerage implements Login
     }
 
 
+    /**
+     * 
+     * Removes a specified trader from the set of logged-in traders.
+     * 
+     * @param trader
+     *            - the trader that logs out.
+     */
     public void logout( Trader trader )
     {
-        // TODO Auto-generated method stub by Shams A.
-
-    }
-    
-    public void placeOrder( TradeOrder order )
-    {
-        // TODO Auto-generated method stub by Shams A.
+        loggedTraders.remove( trader );
 
     }
 
 
-   
-
-
+    /**
+     * 
+     * Requests a quote for a given stock from the stock exachange and passes it
+     * along to the trader by calling trader's receiveMessage method.
+     * 
+     * @param symbol-
+     *            the stock symbol.
+     * @param trader-
+     *            the stock symbol.
+     */
     public void getQuote( String symbol, Trader trader )
     {
-        // TODO Auto-generated method stub by Shams A.
+        trader.receiveMessage( exchange.getQuote( symbol ) );
+
+    }
+
+
+    /**
+     * Places an order at the stock exchange.
+     * 
+     * @param order
+     *            - an order to be placed at the stock exchange.
+     */
+    public void placeOrder( TradeOrder order )
+    {
+        exchange.placeOrder( order );
 
     }
 
