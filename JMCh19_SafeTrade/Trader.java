@@ -5,14 +5,102 @@ import java.util.*;
 /**
  * Represents a stock trader.
  */
+
 public class Trader implements Comparable<Trader>
 {
     private Brokerage brokerage;
+
     private String screenName, password;
+
     private TraderWindow myWindow;
+
     private Queue<String> mailbox;
 
-    // TODO complete class
+
+    public Trader( Brokerage brokerage, String name, String pswd )
+    {
+        this.brokerage = brokerage;
+        screenName = name;
+        password = pswd;
+        mailbox = new LinkedList<String>();
+    }
+
+
+    public String getName()
+    {
+        return screenName;
+    }
+
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+
+    public int compareTo( Trader other )
+    {
+        return screenName.compareToIgnoreCase( other.getName() );
+    }
+
+
+    public boolean equals( Object other )
+    {
+        if ( !( other instanceof Trader ) )
+        {
+            throw new ClassCastException();
+        }
+
+        return this.getName().equals( other );
+    }
+
+
+    public void openWindow()
+    {
+        myWindow = new TraderWindow( this );
+        while ( this.hasMessages() )
+        {
+            myWindow.showMessage( mailbox.remove() );
+        }
+    }
+
+
+    public boolean hasMessages()
+    {
+        return !mailbox.isEmpty();
+    }
+
+
+    public void receiveMessage( String msg )
+    {
+        mailbox.add( msg );
+        if ( myWindow != null )
+        {
+            while(this.hasMessages())
+            {
+                myWindow.showMessage( mailbox.remove() );
+            }
+        }
+    }
+
+
+    public void getQuote( String symbol )
+    {
+        brokerage.getQuote( symbol, this );
+    }
+
+
+    public void placeOrder( TradeOrder order )
+    {
+        brokerage.placeOrder( order );
+    }
+
+
+    public void quit()
+    {
+        brokerage.logout( this );
+        myWindow = null;
+    }
 
 
     //
@@ -22,7 +110,8 @@ public class Trader implements Comparable<Trader>
     {
         return mailbox;
     }
-    
+
+
     /**
      * <p>
      * A generic toString implementation that uses reflection to print names and
@@ -44,11 +133,10 @@ public class Trader implements Comparable<Trader>
             try
             {
                 if ( field.getType().getName().equals( "Brokerage" ) )
-                    str += separator + field.getType().getName() + " "
-                        + field.getName();
+                    str += separator + field.getType().getName() + " " + field.getName();
                 else
-                    str += separator + field.getType().getName() + " "
-                        + field.getName() + ":" + field.get( this );
+                    str += separator + field.getType().getName() + " " + field.getName() + ":"
+                        + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {
@@ -59,42 +147,5 @@ public class Trader implements Comparable<Trader>
         }
 
         return str + "]";
-    }
-
-    @Override
-    public int compareTo( Trader o )
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return 0;
-    }
-
-    public GraphicsConfiguration getName()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return null;
-    }
-
-    public void quit()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        
-    }
-
-    public void getQuote( String symbol )
-    {
-        // TODO Auto-generated method stub by Shams A.
-        
-    }
-
-    public void placeOrder( TradeOrder tradeOrder )
-    {
-        // TODO Auto-generated method stub by Shams A.
-        
-    }
-
-    public void receiveMessage(String message)
-    {
-        // TODO Auto-generated method stub by Shams A.
-        
     }
 }
