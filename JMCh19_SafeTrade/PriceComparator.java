@@ -67,20 +67,18 @@ public class PriceComparator implements java.util.Comparator<TradeOrder>
         {
             if ( ascending )
             {
-                return Math.round( o1.getPrice() - o2.getPrice() );// TODO CHECK
-                                                                   // is the
-                                                                   // price in
-                                                                   // cents,
-                                                                   // what is
-                                                                   // ascending
-                                                                   // order vs
-                                                                   // descending
-                                                                   // order?
+                return (int)Math
+                    .round( o1.getPrice() * 100 - o2.getPrice() * 100 );
+                // TODO CHECK
+                // What is java Ascending order comparator vs Descending order
+                // comparator?
 
             }
             else
             {
-                return Math.round( o2.getPrice() - o1.getPrice() );// TODO CHECK
+                return (int)Math
+                    .round( o2.getPrice() * 100 - o1.getPrice() * 100 );
+                // TODO CHECK
             }
 
         }
