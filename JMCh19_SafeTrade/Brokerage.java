@@ -67,24 +67,52 @@ public class Brokerage implements Login
         {
             return -1;
         }
-        
+
         traders.put( name, new Trader( this, name, password ) );
         return 0;
     }
 
 
-    @Override
+    /**
+     * Tries to login a trader with a given screen name and password. If no
+     * messages are waiting for the trader, sends a "Welcome to SafeTrade!"
+     * message to the trader. Opens a dialog window for the trader by calling
+     * trader's openWindow() method. Adds the trader to the set of all logged-in
+     * traders.
+     * 
+     * @param name
+     *            - the screen name of the trader.
+     * @param password
+     *            - the password for the trader.
+     * @return 0 if successful, or an error code (a negative integer) if failed:
+     *         -1 -- screen name not found -2 -- invalid password -3 -- user is
+     *         already logged in.
+     */
     public int login( String name, String password )
     {
-        // TODO Auto-generated method stub by Shams A.
+
+        Trader trader = traders.get( name );
+        if ( trader == null )
+        {
+            return -1;
+        }
+        if ( !trader.getPassword().equals( password ) )
+        {
+            return -2;
+        }
+        if ( loggedTraders.contains( trader ) )
+        {
+            return -3;
+        }
+
+        if ( !trader.hasMessages() )
+        {
+            trader.receiveMessage( "Welcome to SafeTrade!" );
+        }
+
+        trader.openWindow();
+        loggedTraders.add( trader );
         return 0;
-    }
-
-
-    public void placeOrder( TradeOrder order )
-    {
-        // TODO Auto-generated method stub by Shams A.
-
     }
 
 
@@ -93,6 +121,15 @@ public class Brokerage implements Login
         // TODO Auto-generated method stub by Shams A.
 
     }
+    
+    public void placeOrder( TradeOrder order )
+    {
+        // TODO Auto-generated method stub by Shams A.
+
+    }
+
+
+   
 
 
     public void getQuote( String symbol, Trader trader )
