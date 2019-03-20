@@ -91,4 +91,10 @@ public class Trader implements Comparable<Trader>
         // TODO Auto-generated method stub by Shams A.
         
     }
+
+    public void receiveMessage(String message)
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
+    }
 }

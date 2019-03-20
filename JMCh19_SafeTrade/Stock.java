@@ -45,17 +45,22 @@ public class Stock
         this.companyName = companyName;
         lastPrice = loPrice = hiPrice = startingPrice;
         volume = 0;
-        sellOrders = new PriorityQueue<TradeOrder>( new PriceComparator() ); // Check
+        sellOrders = new PriorityQueue<TradeOrder>( new PriceComparator() );
+        // Check
         buyOrders = new PriorityQueue<TradeOrder>(
             new PriceComparator( false ) ); // Check
     }
 
 
     /**
+     * Returns a quote string for this stock. The quote includes: the company
+     * name for this stock; the stock symbol; last sale price; the lowest and
+     * highest day prices; the lowest price in a sell order (or "market") and
+     * the number of shares in it (or "none" if there are no sell orders); the
+     * highest price in a buy order (or "market") and the number of shares in it
+     * (or "none" if there are no buy orders).
      * 
-     * TODO Write your method description here.
-     * 
-     * @return
+     * @return the quote for this stock.
      */
     public String getQuote()
     {
@@ -95,20 +100,71 @@ public class Stock
             + loPrice + "  vol: " + volume;
         String line3 = ask + "  " + bid;
 
-        String quote = line1 + "\n"  + line2 + "\n"  +line3;
+        String quote = line1 + "\n" + line2 + "\n" + line3;
         return quote;
     }
 
-
+    /**
+     * 
+     * TODO Write your method description here.
+     */
     protected void executeOrders()
     {
 
     }
 
 
+    /**
+     * 
+     * Places a trading order for this stock. Adds the order to the appropriate
+     * priority queue depending on whether this is a buy or sell order. Notifies
+     * the trader who placed the order that the order has been placed, by
+     * sending a message to that trader.
+     * 
+     * @param order
+     *            - a trading order to be placed.
+     */
     public void placeOrder( TradeOrder order )
     {
+        // TODO How to get the company?(+ order.getCompany();) this message
+        // is missing the company name
 
+        String message = "ERROR: Stock.java --> placeOrder";
+        if ( order.isBuy() )
+        {
+            buyOrders.add( order );
+            if ( order.isLimit() )
+            {
+
+                message = "New order: Buy " + order.getSymbol() + "\n"
+                    + order.getShares() + " shares at $" + order.getPrice();
+
+            }
+            else if ( order.isMarket() )
+            {
+                message = "New order: Buy " + order.getSymbol() + "\n"
+                    + order.getShares() + " shares at market";
+            }
+            order.getTrader().receiveMessage( message );
+        }
+        else if ( order.isSell() )
+        {
+            sellOrders.add( order );
+            if ( order.isLimit() )
+            {
+
+                message = "New order: Sell " + order.getSymbol() + "\n"
+                    + order.getShares() + " shares at $" + order.getPrice();
+
+            }
+            else if ( order.isMarket() )
+            {
+                message = "New order: Sell " + order.getSymbol() + "\n"
+                    + order.getShares() + " shares at market";
+            }
+            order.getTrader().receiveMessage( message );
+
+        }
     }
 
 

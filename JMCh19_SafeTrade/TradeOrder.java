@@ -1,5 +1,7 @@
 import java.lang.reflect.*;
-//TODO BY LEO SHAW
+
+
+// TODO BY LEO SHAW
 /**
  * Represents a buy or sell order for trading a given number of shares of a
  * specified stock.
@@ -7,11 +9,17 @@ import java.lang.reflect.*;
 public class TradeOrder
 {
     private Trader trader;
+
     private String symbol;
+
     private boolean buyOrder;
+
     private boolean marketOrder;
+
     private int numShares;
+
     private double price;
+
 
     // TODO complete class
 
@@ -24,8 +32,9 @@ public class TradeOrder
         double price2 )
     {
         // TODO Auto-generated constructor stub by Shams A.
-        
+
     }
+
 
     //
     // The following are for test purposes only
@@ -64,11 +73,13 @@ public class TradeOrder
         return str + "]";
     }
 
+
     public boolean isMarket()
     {
         // TODO Auto-generated method stub by Shams A.
         return false;
     }
+
 
     public boolean isLimit()
     {
@@ -76,15 +87,48 @@ public class TradeOrder
         return false;
     }
 
+
     public double getPrice()
     {
         // TODO Auto-generated method stub by Shams A.
         return 0;
     }
 
+
     public int getShares()
     {
         // TODO Auto-generated method stub by Shams A.
         return 0;
     }
+
+
+    public boolean isBuy()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return false;
+
+    }
+
+
+    public Trader getTrader()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return null;
+    }
+
+
+    public String getSymbol()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return null;
+    }
+
+
+    public boolean isSell()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+
 }
