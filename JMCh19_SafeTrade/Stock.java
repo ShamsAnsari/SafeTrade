@@ -55,9 +55,9 @@ public class Stock
         lastPrice = loPrice = hiPrice = startingPrice;
         volume = 0;
         sellOrders = new PriorityQueue<TradeOrder>( new PriceComparator() );
-        // Check
+
         buyOrders = new PriorityQueue<TradeOrder>(
-            new PriceComparator( false ) ); // Check
+            new PriceComparator( false ) );
     }
 
 
@@ -73,9 +73,6 @@ public class Stock
      */
     public String getQuote()
     {
-        // Should 'money' be #.00?
-        // How can a stock not exist?
-
         // Line2
         String lastPrice = money.format( this.lastPrice );
         String hiPrice = money.format( this.hiPrice );
@@ -115,7 +112,23 @@ public class Stock
 
 
     /**
-     * TODO Write your method description here.
+     * Executes as many pending orders as possible. 1. Examines the top sell
+     * order and the top buy order in the respective priority queues. i) If both
+     * are limit orders and the asking price is less than or equal to the
+     * selling price, executes the order (or a part of it) at the sell order
+     * price. ii) If one order is limit and the other is market, executes the
+     * order (or a part of it) at the limit order price iii) If both orders are
+     * market, executes the order (or a part of it) at the last sale price. 2.
+     * Figures out how many shares can be traded, which is the smallest of the
+     * numbers of shares in the two orders. 3. Subtracts the traded number of
+     * shares from each order; Removes each of the orders with 0 remaining
+     * shares from the respective queue. 4. Updates the day's low price, high
+     * price, and volume. 5. Sends a message to each of the two traders involved
+     * in the transaction. For example: You bought: 150 GGGL at 38.00 amt
+     * 5700.00 6. Repeats steps 1-5 for as long as possible, that is as long as
+     * there is any movement in the buy / sell order queues. (The process gets
+     * stuck when the top buy order and sell order are both limit orders and the
+     * ask price is higher than the bid price.)
      */
     protected void executeOrders()
     {
@@ -123,34 +136,92 @@ public class Stock
         {
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
+            
+            Trader sellTrader = sellOrder.getTrader();
+            Trader buyTrader = buyOrder.getTrader();
+            
             double sellOrderPrice = new Double(
                 money.format( sellOrder.getPrice() ) );
             double buyOrderPrice = new Double(
                 money.format( buyOrder.getPrice() ) );
+            
             int sharesSell = sellOrder.getShares();
             int sharesBuy = sellOrder.getShares();
 
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
-                && ( buyOrderPrice >= sellOrderPrice ) )// Instruction reversed
+                && ( buyOrderPrice >= sellOrderPrice ) )
             {
-                execOrderHelper( sharesSell, sharesBuy );
+                int smallerShares = Math.min( sharesSell, sharesBuy );
+                sellOrder = sellOrders.remove();
+                buyOrder = buyOrders.remove();
+                sellOrder.subtractShares( smallerShares );
+                buyOrder.subtractShares( smallerShares );
+                addToQueue( buyOrder, sellOrder );
+                lastPrice = sellOrder.getPrice();
+                volume += smallerShares;
+                loPrice = ( loPrice > sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
+                hiPrice = ( loPrice < sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
+                    sellTrader.receiveMesssage()
 
             }
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice <= lastPrice ) )
             {
-                execOrderHelper( sharesSell, sharesBuy );
+                int smallerShares = Math.min( sharesSell, sharesBuy );
+                sellOrder = sellOrders.remove();
+                buyOrder = buyOrders.remove();
+                sellOrder.subtractShares( smallerShares );
+                buyOrder.subtractShares( smallerShares );
+                addToQueue( buyOrder, sellOrder );
+                lastPrice = sellOrder.getPrice();
+                volume += smallerShares;
+                loPrice = ( loPrice > sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
+                hiPrice = ( loPrice < sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
 
             }
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= lastPrice ) )
             {
-                execOrderHelper( sharesSell, sharesBuy );
+                int smallerShares = Math.min( sharesSell, sharesBuy );
+                sellOrder = sellOrders.remove();
+                buyOrder = buyOrders.remove();
+                sellOrder.subtractShares( smallerShares );
+                buyOrder.subtractShares( smallerShares );
+                addToQueue( buyOrder, sellOrder );
+                lastPrice = sellOrder.getPrice();
+                volume += smallerShares;
+                loPrice = ( loPrice > sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
+                hiPrice = ( loPrice < sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
 
             }
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
-                execOrderHelper( sharesSell, sharesBuy );
+                int smallerShares = Math.min( sharesSell, sharesBuy );
+                sellOrder = sellOrders.remove();
+                buyOrder = buyOrders.remove();
+                sellOrder.subtractShares( smallerShares );
+                buyOrder.subtractShares( smallerShares );
+                addToQueue( buyOrder, sellOrder );
+                lastPrice = sellOrder.getPrice();
+                volume += smallerShares;
+                loPrice = ( loPrice > sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
+                hiPrice = ( loPrice < sellOrder.getPrice() )
+                    ? sellOrder.getPrice()
+                    : loPrice;
             }
         }
 
@@ -168,23 +239,6 @@ public class Stock
         {
             buyOrders.add( buyOrder );
         }
-    }
-
-
-    private void execOrderHelper( int sharesSell, int sharesBuy )
-    {
-        int smallerShares = Math.min( sharesSell, sharesBuy );
-        TradeOrder sellOrder = sellOrders.remove();
-        TradeOrder buyOrder = buyOrders.remove();
-        sellOrder.subtractShares( smallerShares );
-        buyOrder.subtractShares( smallerShares );
-        addToQueue( buyOrder, sellOrder );
-        lastPrice = sellOrder.getPrice();
-        volume += smallerShares;
-        loPrice = ( loPrice > sellOrder.getPrice() ) ? sellOrder.getPrice()
-            : loPrice;
-        hiPrice = ( loPrice < sellOrder.getPrice() ) ? sellOrder.getPrice()
-            : loPrice;
     }
 
 
@@ -210,14 +264,16 @@ public class Stock
             if ( order.isLimit() )
             {
 
-                message = "New order: Buy " + order.getSymbol() + "\n"
-                    + order.getShares() + " shares at $" + order.getPrice();
+                message = "New order: Buy " + order.getSymbol() + " ("
+                    + companyName + ")\n" + order.getShares() + " shares at $"
+                    + order.getPrice();
 
             }
             else if ( order.isMarket() )
             {
-                message = "New order: Buy " + order.getSymbol() + "\n"
-                    + order.getShares() + " shares at market";
+                message = "New order: Buy " + order.getSymbol() + " ("
+                    + companyName + ")\n" + order.getShares()
+                    + " shares at market";
             }
             order.getTrader().receiveMessage( message );
         }
@@ -227,14 +283,16 @@ public class Stock
             if ( order.isLimit() )
             {
 
-                message = "New order: Sell " + order.getSymbol() + "\n"
-                    + order.getShares() + " shares at $" + order.getPrice();
+                message = "New order: Sell " + order.getSymbol() + " ("
+                    + companyName + ")\n" + order.getShares() + " shares at $"
+                    + order.getPrice();
 
             }
             else if ( order.isMarket() )
             {
-                message = "New order: Sell " + order.getSymbol() + "\n"
-                    + order.getShares() + " shares at market";
+                message = "New order: Sell " + order.getSymbol() + " ("
+                    + companyName + ")\n" + order.getShares()
+                    + " shares at market";
             }
             order.getTrader().receiveMessage( message );
 
