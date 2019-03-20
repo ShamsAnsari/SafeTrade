@@ -1,21 +1,22 @@
 import java.lang.reflect.*;
 import java.util.*;
 
+
 /**
  * Represents a stock exchange. A <code>StockExchange</code> keeps a
  * <code>HashMap</code> of stocks, keyed by a stock symbol. It has methods to
  * list a new stock, request a quote for a given stock symbol, and to place a
  * specified trade order.
-
  *
- *  @author  Shams Ansari
- *  @author 
- *  @author
- *  @version Mar 20, 2019
- *  @author  Period: TODO
- *  @author  Assignment: JMCh19_SafeTrade
+ * 
+ * @author Shams Ansari
+ * @author
+ * @author
+ * @version Mar 20, 2019
+ * @author Period: TODO
+ * @author Assignment: JMCh19_SafeTrade
  *
- *  @author  Sources: TODO
+ * @author Sources: TODO
  */
 public class StockExchange
 {
@@ -29,16 +30,24 @@ public class StockExchange
 
 
     /**
-     * Returns a quote for a given stock.
+     * Returns a quote string for this stock. The quote includes: the company
+     * name for this stock; the stock symbol; last sale price; the lowest and
+     * highest day prices; the lowest price in a sell order (or "market") and
+     * the number of shares in it (or "none" if there are no sell orders); the
+     * highest price in a buy order (or "market") and the number of shares in it
+     * (or "none" if there are no buy orders).
      * 
-     * @param symbol
-     *            Stock symbol
-     * @return a text message that contains the quote
+     * @return the quote for this stock.
      */
     public String getQuote( String symbol )
     {
-        // TODO method
-        return null;// FIX THIS!!
+        Stock stock = listedStocks.get( symbol );
+        if ( stock == null )
+        {
+            return symbol + " not found";
+        }
+        return stock.getQuote();
+
     }
 
 
@@ -54,7 +63,7 @@ public class StockExchange
      */
     public void listStock( String symbol, String name, double price )
     {
-        // TODO method
+        listedStocks.put(  symbol, new Stock( symbol, name, price ) );
     }
 
 
@@ -67,7 +76,7 @@ public class StockExchange
      */
     public void placeOrder( TradeOrder order )
     {
-        // TODO method
+        listedStocks.get( order.getSymbol() ).placeOrder( order );
     }
 
 
@@ -99,8 +108,8 @@ public class StockExchange
         {
             try
             {
-                str += separator + field.getType().getName() + " " + field.getName() + ":"
-                    + field.get( this );
+                str += separator + field.getType().getName() + " "
+                    + field.getName() + ":" + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {

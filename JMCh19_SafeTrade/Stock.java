@@ -73,6 +73,7 @@ public class Stock
      */
     public String getQuote()
     {
+        // TODO implement doesn't exist
         // Line2
         String lastPrice = money.format( this.lastPrice );
         String hiPrice = money.format( this.hiPrice );
@@ -154,7 +155,7 @@ public class Stock
              * to buy at a certain price. Then checks if the buyers' price is
              * greater than than the sellers' price. Because a sale can only
              * happen if the buying price is greater than or equal to the
-             * selling price.
+             * selling price. Executes the order at the seller's price.
              * 
              */
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
@@ -171,7 +172,8 @@ public class Stock
              * wants to sell at the market price("last sale price"). Then checks
              * that the selling price is lower than or equal the market price.
              * Because the sale can only be made if the buying price is greater
-             * than or equal to the selling price.
+             * than or equal to the selling price. Executes the order at the
+             * seller's price
              */
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice <= lastPrice ) )
@@ -183,7 +185,10 @@ public class Stock
                     buyTrader );
             }
             /*
-             * 
+             * If the seller wants to sell at market price and the buyer wants
+             * to buy at a certain price. Then checks if the buying price is
+             * greater than or equal to the lastPrice, which is the market
+             * price. Executes the order at the buyer's price.
              */
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= lastPrice ) )
@@ -196,7 +201,8 @@ public class Stock
 
             }
             /*
-             * 
+             * If the seller wants to sell at the market price and the buyer
+             * wants to buy at the market. Executes the order at the last price.
              */
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
@@ -216,7 +222,9 @@ public class Stock
      * Adds the orders back to the respective queues if they are not empty
      * 
      * @param buyOrder
+     *            - The buy order a TradeOrder object
      * @param sellOrder
+     *            - The sell order a TradeOrder object
      */
     private void addToQueue( TradeOrder buyOrder, TradeOrder sellOrder )
     {
@@ -231,6 +239,21 @@ public class Stock
     }
 
 
+    /**
+     * 
+     * See the step by step comments
+     * 
+     * @param sharesSell
+     *            - (int) the shares the seller is selling
+     * @param sharesBuy
+     *            - (int) the shares the buyer is buying
+     * @param sellingPrice
+     *            - (double) the price at which the deal is being executed
+     * @param sellTrader
+     *            - (Trader) the trader who is selling
+     * @param buyTrader
+     *            - (Trader) the trader who is buying
+     */
     private void execHelper(
         int sharesSell,
         int sharesBuy,
@@ -284,8 +307,6 @@ public class Stock
      */
     public void placeOrder( TradeOrder order )
     {
-        // TODO How to get the company?(+ order.getCompany();) this message
-        // is missing the company name
 
         String message = "ERROR: Stock.java --> placeOrder";
         if ( order.isBuy() )
