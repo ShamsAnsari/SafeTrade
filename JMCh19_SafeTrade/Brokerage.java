@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class Brokerage implements Login
 {
-    private Map<String, Trader> traders;
+    private Map<String, Trader> traders; // Key = trader name
 
     private Set<Trader> loggedTraders;
 
@@ -55,8 +55,20 @@ public class Brokerage implements Login
      */
     public int addUser( String name, String password )
     {
+        if ( !( ( name.length() >= 4 ) && ( name.length() <= 10 ) ) )
+        {
+            return -1;
+        }
+        if ( !( ( password.length() >= 2 ) && ( password.length() <= 10 ) ) )
+        {
+            return -2;
+        }
+        if ( traders.containsKey( name ) )
+        {
+            return -1;
+        }
         
-        // TODO Auto-generated method stub by Shams A.
+        traders.put( name, new Trader( this, name, password ) );
         return 0;
     }
 
