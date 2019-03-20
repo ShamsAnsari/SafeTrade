@@ -14,6 +14,12 @@ public class Brokerage implements Login
     // TODO complete class
 
     
+    public Brokerage( StockExchange exchange2 )
+    {
+        // TODO Auto-generated constructor stub by Shams A.
+        
+    }
+
     //
     // The following are for test purposes only
     //
@@ -64,5 +70,19 @@ public class Brokerage implements Login
         }
 
         return str + "]";
+    }
+
+    @Override
+    public int addUser( String name, String password )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return 0;
+    }
+
+    @Override
+    public int login( String name, String password )
+    {
+        // TODO Auto-generated method stub Shams A.
+        return 0;
     }
 }

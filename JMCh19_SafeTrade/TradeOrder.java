@@ -15,6 +15,18 @@ public class TradeOrder
 
     // TODO complete class
 
+    public TradeOrder(
+        Trader myTrader,
+        String symbol2,
+        boolean buyOrder2,
+        boolean marketOrder2,
+        int numShares2,
+        double price2 )
+    {
+        // TODO Auto-generated constructor stub by Shams A.
+        
+    }
+
     //
     // The following are for test purposes only
     //
@@ -64,7 +76,13 @@ public class TradeOrder
         return false;
     }
 
-    public int getPrice()
+    public double getPrice()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return 0;
+    }
+
+    public int getShares()
     {
         // TODO Auto-generated method stub by Shams A.
         return 0;

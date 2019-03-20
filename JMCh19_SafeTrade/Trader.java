@@ -1,3 +1,4 @@
+import java.awt.GraphicsConfiguration;
 import java.lang.reflect.*;
 import java.util.*;
 //TODO BY MR.FULK
@@ -58,5 +59,36 @@ public class Trader implements Comparable<Trader>
         }
 
         return str + "]";
+    }
+
+    @Override
+    public int compareTo( Trader o )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return 0;
+    }
+
+    public GraphicsConfiguration getName()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        return null;
+    }
+
+    public void quit()
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
+    }
+
+    public void getQuote( String symbol )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
+    }
+
+    public void placeOrder( TradeOrder tradeOrder )
+    {
+        // TODO Auto-generated method stub by Shams A.
+        
     }
 }
