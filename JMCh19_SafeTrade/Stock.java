@@ -179,6 +179,12 @@ public class Stock
         sellOrder.subtractShares( smallerShares );
         buyOrder.subtractShares( smallerShares );
         addToQueue( buyOrder, sellOrder );
+        lastPrice = sellOrder.getPrice();
+        volume += smallerShares;
+        loPrice = ( loPrice > sellOrder.getPrice() ) ? sellOrder.getPrice()
+            : loPrice;
+        hiPrice = ( loPrice < sellOrder.getPrice() ) ? sellOrder.getPrice()
+            : loPrice;
     }
 
 
