@@ -1,7 +1,7 @@
 import java.lang.reflect.*;
 
 
-// TODO BY LEO SHAW
+// TODO BY FULK
 /**
  * Represents a buy or sell order for trading a given number of shares of a
  * specified stock.
@@ -21,20 +21,77 @@ public class TradeOrder
     private double price;
 
 
-    // TODO complete class
-
     public TradeOrder(
-        Trader myTrader,
-        String symbol2,
-        boolean buyOrder2,
-        boolean marketOrder2,
-        int numShares2,
-        double price2 )
+        Trader trader,
+        String symbol,
+        boolean buyOrder,
+        boolean marketOrder,
+        int numShares,
+        double price )
     {
-        // TODO Auto-generated constructor stub by Shams A.
-
+        this.trader = trader;
+        this.symbol = symbol;
+        this.buyOrder = buyOrder;
+        this.marketOrder = marketOrder;
+        this.numShares = numShares;
+        this.price = price;
     }
 
+
+    public Trader getTrader()
+    {
+        return trader;
+    }
+
+
+    public String getSymbol()
+    {
+        return symbol;
+    }
+
+
+    public boolean isBuy()
+    {
+        return buyOrder;
+    }
+
+
+    public boolean isSell()
+    {
+        return !buyOrder;
+    }
+
+
+    public boolean isMarket()
+    {
+        return marketOrder;
+    }
+
+
+    public boolean isLimit()
+    {
+        return !marketOrder;
+    }
+
+
+    public int getShares()
+    {
+        return numShares;
+    }
+
+
+    public double getPrice()
+    {
+        return price;
+    }
+
+
+    public void subtractShares( int shares )
+    {
+        numShares -= shares;
+    }
+
+    
 
     //
     // The following are for test purposes only
@@ -59,8 +116,8 @@ public class TradeOrder
         {
             try
             {
-                str += separator + field.getType().getName() + " "
-                    + field.getName() + ":" + field.get( this );
+                str += separator + field.getType().getName() + " " + field.getName() + ":"
+                    + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {
@@ -72,67 +129,4 @@ public class TradeOrder
 
         return str + "]";
     }
-
-
-    public boolean isMarket()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return false;
-    }
-
-
-    public boolean isLimit()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return false;
-    }
-
-
-    public double getPrice()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return 0;
-    }
-
-
-    public int getShares()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return 0;
-    }
-
-
-    public boolean isBuy()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return false;
-
-    }
-
-
-    public Trader getTrader()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return null;
-    }
-
-
-    public String getSymbol()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return null;
-    }
-
-
-    public boolean isSell()
-    {
-        // TODO Auto-generated method stub by Shams A.
-        return false;
-    }
-    public void subtractShares(int shares)
-    {
-        //TODO Auto-generated method stub by Shams A.
-    }
-
-
 }
