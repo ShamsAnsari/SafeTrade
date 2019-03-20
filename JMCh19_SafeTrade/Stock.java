@@ -119,55 +119,66 @@ public class Stock
      */
     protected void executeOrders()
     {
-        TradeOrder sellOrder = sellOrders.peek();
-        TradeOrder buyOrder = buyOrders.peek();
-        double sellOrderPrice = new Double(
-            money.format( sellOrder.getPrice() ) );
-        double buyOrderPrice = new Double(
-            money.format( buyOrder.getPrice() ) );
-        int sharesSell = sellOrder.getShares();
-        int sharesBuy = sellOrder.getShares();
-
-        if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
-            && ( buyOrderPrice >= sellOrderPrice ) )// Instruction reversed
+        while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
-            int smallerShares = Math.min( sharesSell, sharesBuy );
-            sellOrder = sellOrders.remove();
-            buyOrder = buyOrders.remove();
-            sellOrder.subtractShares(smallerShares);
-            buyOrder.subtractShares( smallerShares ); 
-            addToQueue(buyOrder, sellOrder);
-        }
+            TradeOrder sellOrder = sellOrders.peek();
+            TradeOrder buyOrder = buyOrders.peek();
+            double sellOrderPrice = new Double(
+                money.format( sellOrder.getPrice() ) );
+            double buyOrderPrice = new Double(
+                money.format( buyOrder.getPrice() ) );
+            int sharesSell = sellOrder.getShares();
+            int sharesBuy = sellOrder.getShares();
 
-        else if ( sellOrder.isLimit() && buyOrder.isMarket() )
-        {
+            if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
+                && ( buyOrderPrice >= sellOrderPrice ) )// Instruction reversed
+            {
+                execOrderHelper( sharesSell, sharesBuy );
 
-        }
-        else if ( sellOrder.isMarket() && buyOrder.isBuy() )
-        {
+            }
+            else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
+                && ( sellOrderPrice <= lastPrice ) )
+            {
+                execOrderHelper( sharesSell, sharesBuy );
 
-        }
-        else if ( sellOrder.isMarket() && buyOrder.isMarket() )
-        {
+            }
+            else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
+                && ( buyOrderPrice >= lastPrice ) )
+            {
+                execOrderHelper( sharesSell, sharesBuy );
 
+            }
+            else if ( sellOrder.isMarket() && buyOrder.isMarket() )
+            {
+                execOrderHelper( sharesSell, sharesBuy );
+            }
         }
-        
-        
 
     }
 
 
-    // not part
-    private void addToQueue(TradeOrder buyOrder, TradeOrder sellOrder)
+    // not part of instruc, helper method
+    private void addToQueue( TradeOrder buyOrder, TradeOrder sellOrder )
     {
-        if(sellOrder.getShares() != 0)
+        if ( sellOrder.getShares() != 0 )
         {
             sellOrders.add( sellOrder );
         }
-        if(buyOrder.getShares() != 0)
+        if ( buyOrder.getShares() != 0 )
         {
             buyOrders.add( buyOrder );
         }
+    }
+
+
+    private void execOrderHelper( int sharesSell, int sharesBuy )
+    {
+        int smallerShares = Math.min( sharesSell, sharesBuy );
+        TradeOrder sellOrder = sellOrders.remove();
+        TradeOrder buyOrder = buyOrders.remove();
+        sellOrder.subtractShares( smallerShares );
+        buyOrder.subtractShares( smallerShares );
+        addToQueue( buyOrder, sellOrder );
     }
 
 
