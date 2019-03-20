@@ -1,11 +1,20 @@
 import java.awt.GraphicsConfiguration;
 import java.lang.reflect.*;
 import java.util.*;
-//TODO BY MR.FULK
+
+
 /**
  * Represents a stock trader.
+ * 
+ * @author Elisa Yang
+ * @author Shams Ansari
+ * @author Leo Shaw
+ * @version Mar 20, 2019
+ * @author Period: TODO
+ * @author Assignment: JMCh19_SafeTrade
+ *
+ * @author Sources: TODO
  */
-
 public class Trader implements Comparable<Trader>
 {
     private Brokerage brokerage;
@@ -76,7 +85,7 @@ public class Trader implements Comparable<Trader>
         mailbox.add( msg );
         if ( myWindow != null )
         {
-            while(this.hasMessages())
+            while ( this.hasMessages() )
             {
                 myWindow.showMessage( mailbox.remove() );
             }
@@ -133,10 +142,11 @@ public class Trader implements Comparable<Trader>
             try
             {
                 if ( field.getType().getName().equals( "Brokerage" ) )
-                    str += separator + field.getType().getName() + " " + field.getName();
+                    str += separator + field.getType().getName() + " "
+                        + field.getName();
                 else
-                    str += separator + field.getType().getName() + " " + field.getName() + ":"
-                        + field.get( this );
+                    str += separator + field.getType().getName() + " "
+                        + field.getName() + ":" + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {

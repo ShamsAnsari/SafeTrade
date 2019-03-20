@@ -3,8 +3,8 @@
  * A price comparator for trade orders.
  *
  * @author Shams Ansari
- * @author Shams Ansari
- * @author Shams Ansari
+ * @author 
+ * @author 
  * @version Mar 20, 2019
  * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade

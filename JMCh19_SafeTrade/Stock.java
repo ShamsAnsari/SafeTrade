@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
  * 
  *
  * @author Shams Ansari
- * @author Shams Ansari
- * @author Shams Ansari
+ * @author 
+ * @author 
  * @version Mar 20, 2019
  * @author Period: TODO
  * @author Assignment: JMCh19_SafeTrade
@@ -73,7 +73,7 @@ public class Stock
      */
     public String getQuote()
     {
-        // TODO implement doesn't exist
+        
         // Line2
         String lastPrice = money.format( this.lastPrice );
         String hiPrice = money.format( this.hiPrice );

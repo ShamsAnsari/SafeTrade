@@ -1,10 +1,18 @@
 import java.lang.reflect.*;
 
 
-// TODO BY FULK
 /**
  * Represents a buy or sell order for trading a given number of shares of a
  * specified stock.
+ * 
+ * @author Elisa Yang
+ * @author Shams Ansari
+ * @author Leo Shaw
+ * @version Mar 20, 2019
+ * @author Period: TODO
+ * @author Assignment: JMCh19_SafeTrade
+ *
+ * @author Sources: TODO
  */
 public class TradeOrder
 {
@@ -91,7 +99,6 @@ public class TradeOrder
         numShares -= shares;
     }
 
-    
 
     //
     // The following are for test purposes only
@@ -116,8 +123,8 @@ public class TradeOrder
         {
             try
             {
-                str += separator + field.getType().getName() + " " + field.getName() + ":"
-                    + field.get( this );
+                str += separator + field.getType().getName() + " "
+                    + field.getName() + ":" + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {
