@@ -93,10 +93,6 @@ public class Brokerage implements Login
     {
 
         Trader trader = traders.get( name );
-        if(name.equals( "" ) || name == null)
-        {
-            return -2;
-        }
         if ( trader == null )
         {
             return -1;
@@ -115,7 +111,7 @@ public class Brokerage implements Login
             trader.receiveMessage( "Welcome to SafeTrade!" );
         }
 
-        //trader.openWindow(); TODO THIS CAUSES AN ERROR!!, many tabs open
+        trader.openWindow(); 
         loggedTraders.add( trader );
         return 0;
     }
