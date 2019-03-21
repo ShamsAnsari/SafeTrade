@@ -25,7 +25,7 @@ public class StockExchange
 
     public StockExchange()
     {
-        listedStocks = new HashMap<String, Stock>( 2000 );
+        listedStocks = new HashMap<String, Stock>();
     }
 
 
