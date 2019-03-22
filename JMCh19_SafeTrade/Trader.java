@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Represents a stock trader.
  * 
- * @author Elisa Yang
+ * @author Elissa Yang
  * @author Shams Ansari
  * @author Leo Shaw
  * @version Mar 20, 2019
