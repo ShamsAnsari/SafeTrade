@@ -272,6 +272,8 @@ public class Stock
         // Removes the orders from the queue
         TradeOrder sellOrder = sellOrders.remove();
         TradeOrder buyOrder = buyOrders.remove();
+        lastPrice = sellingPrice;
+        volume += smallerShares;
 
         // Subtracts the smaller # of shares from both, one will be left
         // 0
@@ -283,8 +285,8 @@ public class Stock
         addToQueue( buyOrder, sellOrder );
 
         // Updates the day's high's and lows
-        lastPrice = sellOrder.getPrice();
-        volume += smallerShares;
+        // lastPrice = sellOrder.getPrice();
+        // volume += smallerShares;
         loPrice = ( loPrice > sellingPrice ) ? sellingPrice : loPrice;
         hiPrice = ( loPrice < sellingPrice ) ? sellingPrice : loPrice;
 
