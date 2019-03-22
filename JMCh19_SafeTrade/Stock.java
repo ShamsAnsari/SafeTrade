@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
  * 
  *
  * @author Shams Ansari
- * @author 
- * @author 
+ * @author
+ * @author
  * @version Mar 20, 2019
  * @author Period: TODO
  * @author Assignment: JMCh19_SafeTrade
@@ -73,13 +73,10 @@ public class Stock
      */
     public String getQuote()
     {
-        
-        
         // Line2
-        
-        String lastPrice =  money.format( this.lastPrice );
-        String hiPrice =  money.format( this.hiPrice );
-        String loPrice =  money.format( this.loPrice );
+        String lastPrice = money.format( this.lastPrice );
+        String hiPrice = money.format( this.hiPrice );
+        String loPrice = money.format( this.loPrice );
 
         // Line3
         String ask;
@@ -136,7 +133,7 @@ public class Stock
     @SuppressWarnings("deprecation")
     protected void executeOrders()
     {
-       while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
+        while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
@@ -150,7 +147,7 @@ public class Stock
                 money.format( buyOrder.getPrice() ) );
 
             int sharesSell = sellOrder.getShares();
-            int sharesBuy = sellOrder.getShares();
+            int sharesBuy = buyOrder.getShares();
 
             /*
              * If the seller wants to sell at a certain price and the buy wants
@@ -163,7 +160,6 @@ public class Stock
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
-                System.out.println("GOING EXECT ORDER 1");
                 execHelper( sharesSell,
                     sharesBuy,
                     sellOrderPrice,
@@ -181,7 +177,6 @@ public class Stock
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice <= lastPrice ) )
             {
-                System.out.println("GOING EXECT ORDER 2");
 
                 execHelper( sharesSell,
                     sharesBuy,
@@ -198,7 +193,6 @@ public class Stock
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= lastPrice ) )
             {
-                System.out.println("GOING EXECT ORDER 3");
 
                 execHelper( sharesSell,
                     sharesBuy,
@@ -213,7 +207,6 @@ public class Stock
              */
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
-                System.out.println("GOING EXECT ORDER 4");
 
                 execHelper( sharesSell,
                     sharesBuy,
@@ -221,7 +214,6 @@ public class Stock
                     sellTrader,
                     buyTrader );
             }
-            System.out.println("GOING EXECT ORDER null");
 
         }
 
@@ -274,8 +266,7 @@ public class Stock
     {
         // Finds the stocks of the lower trade, b/c thats how many you
         // can trade
-            buyTrader.receiveMessage( " DEBUG buy **exec** SHAMS" );
-            System.out.println("HELLO DUBG");
+
         int smallerShares = Math.min( sharesSell, sharesBuy );
 
         // Removes the orders from the queue
@@ -320,10 +311,9 @@ public class Stock
      */
     public void placeOrder( TradeOrder order )
     {
-        
 
         String message = "ERROR: Stock.java --> placeOrder";
-        
+
         if ( order.isBuy() )
         {
             buyOrders.add( order );
@@ -341,19 +331,18 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );//CORRECTLY WORKING
+            order.getTrader().receiveMessage( message );// CORRECTLY WORKING
         }
         else if ( order.isSell() )
         {
             sellOrders.add( order );
-            
+
             if ( order.isLimit() )
             {
 
                 message = "New order: Sell " + order.getSymbol() + " ("
                     + companyName + ")\n" + order.getShares() + " shares at $"
                     + order.getPrice();
-                
 
             }
             else if ( order.isMarket() )
@@ -362,7 +351,7 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );//WORKING CORRECTLY
+            order.getTrader().receiveMessage( message );// WORKING CORRECTLY
 
         }
         this.executeOrders();
