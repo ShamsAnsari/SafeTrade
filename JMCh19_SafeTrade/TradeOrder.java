@@ -5,7 +5,7 @@ import java.lang.reflect.*;
  * Represents a buy or sell order for trading a given number of shares of a
  * specified stock.
  * 
- * @author Elisa Yang
+ * @author Elissa Yang
  * @author Shams Ansari
  * @author Leo Shaw
  * @version Mar 20, 2019
