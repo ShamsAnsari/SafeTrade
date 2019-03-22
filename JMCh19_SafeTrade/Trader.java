@@ -83,8 +83,10 @@ public class Trader implements Comparable<Trader>
     public void receiveMessage( String msg )
     {
         mailbox.add( msg );
+       
         if ( myWindow != null )
         {
+            
             while ( this.hasMessages() )
             {
                 myWindow.showMessage( mailbox.remove() );
