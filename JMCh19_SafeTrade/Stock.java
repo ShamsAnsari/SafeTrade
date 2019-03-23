@@ -133,8 +133,12 @@ public class Stock
     @SuppressWarnings("deprecation")
     protected void executeOrders()
     {
+        System.out.println( "stock.executeOrders 1" );
+
         while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
+            System.out.println( "stock.executeOrders 2" );
+
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
 
@@ -149,6 +153,16 @@ public class Stock
             int sharesSell = sellOrder.getShares();
             int sharesBuy = buyOrder.getShares();
 
+            // This statements prevents the while loop from going into a
+            // infinite loop
+            if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
+                && ( buyOrderPrice < lastPrice ) )
+            {
+                System.out.println( "stock.executeOrders 3" );
+                break;
+
+            }
+            System.out.println( "stock.executeOrders 4" );
             /*
              * If the seller wants to sell at a certain price and the buy wants
              * to buy at a certain price. Then checks if the buyers' price is
@@ -266,6 +280,7 @@ public class Stock
     {
         // Finds the stocks of the lower trade, b/c thats how many you
         // can trade
+        System.out.println( "stock.execHelper 1" );
 
         int smallerShares = Math.min( sharesSell, sharesBuy );
 
