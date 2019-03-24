@@ -244,7 +244,7 @@ public class JUSafeTradeTest
         assertNotNull( tw );
         tw.showMessage( null );
     }
-    // --Test PriceComparator 
+    // --Test PriceComparator
 
     // new Trader( new Brokerage( new StockExchange() )
     private TradeOrder tOrderMarket1 = new TradeOrder( null,
@@ -254,19 +254,21 @@ public class JUSafeTradeTest
         0,
         0.0 );
 
-    private TradeOrder tOrderMarket2 = new TradeOrder(null,
+    private TradeOrder tOrderMarket2 = new TradeOrder( null,
         null,
         true,
         true,
         0,
         0.0 );
-    private TradeOrder tOrderLimit1 = new TradeOrder(null,
+
+    private TradeOrder tOrderLimit1 = new TradeOrder( null,
         null,
         true,
         false,
         0,
         100.0 );
-    private TradeOrder tOrderLimit2 = new TradeOrder(null,
+
+    private TradeOrder tOrderLimit2 = new TradeOrder( null,
         null,
         true,
         false,
@@ -279,43 +281,46 @@ public class JUSafeTradeTest
     {
         PriceComparator pc = new PriceComparator();
         int mm = pc.compare( tOrderMarket1, tOrderMarket2 );
-        assertEquals(mm, 0);
-        
+        assertEquals( mm, 0 );
 
     }
-    
+
+
     @Test
     public void priceComparatorMLTest()
     {
         PriceComparator pc = new PriceComparator();
         int ml = pc.compare( tOrderMarket1, tOrderLimit1 );
-        assertEquals(ml, -1);
+        assertEquals( ml, -1 );
     }
-    
+
+
     @Test
     public void priceComparatorLMTest()
     {
         PriceComparator pc = new PriceComparator();
         int lm = pc.compare( tOrderLimit1, tOrderMarket1 );
-        assertEquals(lm, 1);
+        assertEquals( lm, 1);
     }
-    
+
+
     @Test
     public void priceComparatorLLTTest()
     {
         PriceComparator pc = new PriceComparator();
         int ll = pc.compare( tOrderLimit1, tOrderLimit2 );
-        assertEquals(ll, 2500 );
+        assertEquals( ll, 2500 );
     }
-    
+
+
     @Test
     public void priceComparatorLLFTest()
     {
-        PriceComparator pc = new PriceComparator(false);
+        PriceComparator pc = new PriceComparator( false );
         int ll = pc.compare( tOrderLimit1, tOrderLimit2 );
-        assertEquals(ll, -2500 );
+        assertEquals( ll, -2500 );
     }
-    
+
     // TODO your tests here
 
     // --Test Trader
@@ -334,12 +339,18 @@ public class JUSafeTradeTest
 
     // TODO your tests here
 
+
     // Remove block comment below to run JUnit test in console
-    
-      public static junit.framework.Test suite() { return new
-      JUnit4TestAdapter( JUSafeTradeTest.class ); }
-      
-      public static void main( String args[] ) {
-      org.junit.runner.JUnitCore.main( "JUSafeTradeTest" ); }
-     
+
+    public static junit.framework.Test suite()
+    {
+        return new JUnit4TestAdapter( JUSafeTradeTest.class );
+    }
+
+
+    public static void main( String args[] )
+    {
+        org.junit.runner.JUnitCore.main( "JUSafeTradeTest" );
+    }
+
 }
