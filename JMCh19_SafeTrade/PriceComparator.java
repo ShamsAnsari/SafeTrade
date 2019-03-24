@@ -1,15 +1,14 @@
-
 /**
  * A price comparator for trade orders.
  *
  * @author Shams Ansari
- * @author 
- * @author 
+ * @author Leo Shaw
+ * @author Elissa Yang
  * @version Mar 20, 2019
  * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class PriceComparator implements java.util.Comparator<TradeOrder>
 {

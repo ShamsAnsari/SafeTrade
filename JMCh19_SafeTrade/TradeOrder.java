@@ -9,10 +9,10 @@ import java.lang.reflect.*;
  * @author Shams Ansari
  * @author Leo Shaw
  * @version Mar 20, 2019
- * @author Period: TODO
+ * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class TradeOrder
 {
