@@ -8,13 +8,13 @@ import java.text.DecimalFormat;
  * 
  *
  * @author Shams Ansari
- * @author
- * @author
+ * @author Leo Shaw
+ * @author Elissa Yang
  * @version Mar 20, 2019
- * @author Period: TODO
+ * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class Stock
 {

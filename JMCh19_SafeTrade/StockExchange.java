@@ -9,14 +9,14 @@ import java.util.*;
  * specified trade order.
  *
  * 
+ * @author Leo Shaw
  * @author Shams Ansari
- * @author 
- * @author 
+ * @author Elissa Yang
  * @version Mar 20, 2019
- * @author Period: TODO
+ * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class StockExchange
 {

@@ -7,14 +7,15 @@ import java.util.*;
  * by a stock symbol. It has methods to list a new stock, request a quote for a
  * given stock symbol, and to place a specified trade order.
  * 
- * @author Shams Ansari
- * @author Elisa Yang
+ * 
  * @author Leo Shaw
+ * @author Shams Ansari
+ * @author Elissa Yang
  * @version Mar 20, 2019
- * @author Period: TODO
+ * @author Period: 4
  * @author Assignment: JMCh19_SafeTrade
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class Brokerage implements Login
 {
