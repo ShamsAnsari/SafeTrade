@@ -162,6 +162,9 @@ public class Stock
                 System.out.println( "stock.executeOrders 3" );
                 break;
             }
+            /*
+             * This statement prevents an infinite loop
+             */
             if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice > lastPrice ) )
             {
@@ -177,7 +180,6 @@ public class Stock
             {
                 System.out.println( "stock.executeOrders 5" );
                 break;
-
             }
 
             System.out.println( "stock.executeOrders 6" );
