@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import junit.framework.JUnit4TestAdapter;
 
 
-// TODO BY SHAMS ANSARI AND LEO SHAW
+
 /**
  * SafeTrade tests: TradeOrder PriceComparator Trader Brokerage StockExchange
  * Stock
@@ -276,6 +276,7 @@ public class JUSafeTradeTest
         75.0 );
 
 
+   
     @Test
     public void priceComparatorMMTest()
     {
@@ -305,7 +306,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void priceComparatorLLTTest()
+    public void priceComparatorLLTrueTest()
     {
         PriceComparator pc = new PriceComparator();
         int ll = pc.compare( tOrderLimit1, tOrderLimit2 );
@@ -314,7 +315,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void priceComparatorLLFTest()
+    public void priceComparatorLLFalseTest()
     {
         PriceComparator pc = new PriceComparator( false );
         int ll = pc.compare( tOrderLimit1, tOrderLimit2 );
@@ -336,6 +337,7 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Stock
+    
 
     // TODO your tests here
 

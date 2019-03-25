@@ -62,11 +62,11 @@ public class PriceComparator implements java.util.Comparator<TradeOrder>
         {
             return 0;
         }
-        if ( o1.isMarket() && o2.isLimit() )// o1 one is less than o2
+        else if ( o1.isMarket() && o2.isLimit() )// o1 one is less than o2
         {
             return -1;
         }
-        if ( o1.isLimit() && o2.isMarket() )// o1 is greater than o2
+        else if ( o1.isLimit() && o2.isMarket() )// o1 is greater than o2
         {
             return 1;
         }
