@@ -326,7 +326,7 @@ public class JUSafeTradeTest
 
     // --Test Trader
     @Test
-    public void getNameTest()
+    public void traderGetNameTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         assertEquals( t.getName(), "Steve" );
@@ -334,7 +334,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void getPassTest()
+    public void traderGetPassTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         assertEquals( t.getPassword(), "12345" );
@@ -342,7 +342,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void compareToZeroTest()
+    public void traderCompareToZeroTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Steve", "54321" );
@@ -351,7 +351,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void compareToNegativeTest()
+    public void traderCompareToNegativeTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Zachary", "54321" );
@@ -360,7 +360,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void compareToPositiveTest()
+    public void traderCompareToPositiveTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Zachary", "54321" );
@@ -369,7 +369,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void equalsExceptionTest()
+    public void traderEqualsExceptionTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         String fail = "hi";
@@ -378,7 +378,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void equalsTrueTest()
+    public void traderEqualsTrueTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Steve", "54321" );
@@ -387,7 +387,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void equalsFalseTest()
+    public void traderEqualsFalseTest()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Zachary", "54321" );
@@ -424,7 +424,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void hasMessagesFalse()
+    public void traderHasMessagesFalse()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         assertFalse( t.hasMessages() );
@@ -432,7 +432,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void hasMessagesTrue()
+    public void traderHasMessagesTrue()
     {
         Trader t = new Trader( null, "Steve", "12345" );
         t.receiveMessage( "hi" );
@@ -441,7 +441,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void getQuoteTest()
+    public void traderGetQuoteTest()
     {
         StockExchange s = new StockExchange();
         String symbol = "AAPL";
@@ -453,7 +453,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void mailboxTest()
+    public void traderMailboxTest()
     {
         LinkedList<String> mail = new LinkedList<String>();
         mail.add( "message" );
