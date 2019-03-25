@@ -355,7 +355,7 @@ public class JUSafeTradeTest
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Zachary", "54321" );
-        assertEquals( t.compareTo( s ), -1 );
+        assertEquals( -7, t.compareTo( s ) );
     }
 
 
@@ -364,7 +364,7 @@ public class JUSafeTradeTest
     {
         Trader t = new Trader( null, "Steve", "12345" );
         Trader s = new Trader( null, "Zachary", "54321" );
-        assertEquals( s.compareTo( t ), 1 );
+        assertEquals( 7, s.compareTo( t ) );
     }
 
 
