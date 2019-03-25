@@ -325,6 +325,143 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Trader
+    @Test
+    public void getNameTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        assertEquals( t.getName(), "Steve" );
+    }
+
+
+    @Test
+    public void getPassTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        assertEquals( t.getPassword(), "12345" );
+    }
+
+
+    @Test
+    public void compareToZeroTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        Trader s = new Trader( null, "Steve", "54321" );
+        assertEquals( t.compareTo( s ), 0 );
+    }
+
+
+    @Test
+    public void compareToNegativeTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        Trader s = new Trader( null, "Zachary", "54321" );
+        assertEquals( t.compareTo( s ), -1 );
+    }
+
+
+    @Test
+    public void compareToPositiveTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        Trader s = new Trader( null, "Zachary", "54321" );
+        assertEquals( s.compareTo( t ), 1 );
+    }
+
+
+    @Test
+    public void equalsExceptionTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        String fail = "hi";
+        // assertThrows(ClassCastException.class, t.equals( fail ));
+    }
+
+
+    @Test
+    public void equalsTrueTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        Trader s = new Trader( null, "Steve", "54321" );
+        assertTrue( t.equals( s ) );
+    }
+
+
+    @Test
+    public void equalsFalseTest()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        Trader s = new Trader( null, "Zachary", "54321" );
+        assertFalse( t.equals( s ) );
+    }
+
+
+    @Test
+    public void idkhowtoopenWindowTest()
+    {
+
+    }
+
+
+    @Test
+    public void idkhowtoquitTest()
+    {
+
+    }
+
+
+    @Test
+    public void idkhowtoplaceOrderTest()
+    {
+
+    }
+
+
+    @Test
+    public void idkhowtoreceiveMessageTest()
+    {
+
+    }
+
+
+    @Test
+    public void hasMessagesFalse()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        assertFalse( t.hasMessages() );
+    }
+
+
+    @Test
+    public void hasMessagesTrue()
+    {
+        Trader t = new Trader( null, "Steve", "12345" );
+        t.receiveMessage( "hi" );
+        assertTrue( t.hasMessages() );
+    }
+
+
+    @Test
+    public void getQuoteTest()
+    {
+        StockExchange s = new StockExchange();
+        String symbol = "AAPL";
+        s.listStock( symbol, "Apple", 100.0 );
+        Brokerage b = new Brokerage( s );
+        Trader t = new Trader( b, "Steve", "12345" );
+        // IDK
+    }
+
+
+    @Test
+    public void mailboxTest()
+    {
+        LinkedList<String> mail = new LinkedList<String>();
+        mail.add( "message" );
+        Trader t = new Trader( null, "Steve", "12345" );
+        t.receiveMessage( "message" );
+
+        assertEquals( t.mailbox(), mail );
+    }
 
     // TODO your tests here
 
