@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -40,17 +41,34 @@ public class JUSafeTradeTest
      * constructed value TradeOrderSubtractShares - subtracts known value &
      * compares result returned by getShares to expected value
      */
+    /**
+     * GGGL
+     */
     private String symbol = "GGGL";
 
     private boolean buyOrder = true;
 
     private boolean marketOrder = true;
 
+    /**
+     * 123
+     */
     private int numShares = 123;
 
+    /**
+     * 24
+     */
     private int numToSubtract = 24;
 
+    /**
+     * 123.45
+     */
     private double price = 123.45;
+
+    /**
+     * Giggle.com
+     */
+    private String companyName = "Giggle.com";
 
 
     @Test
@@ -321,7 +339,6 @@ public class JUSafeTradeTest
         assertEquals( ll, -2500 );
     }
 
-    // TODO your tests here
 
     // --Test Trader
     @Test
@@ -473,56 +490,289 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Stock
-
-    // private String symbol = "GGGL";
-    private String companyName = "Giggle.com";
-    // private boolean buyOrder = true;
-    //
-    // private boolean marketOrder = true;
-    //
-    // private int numShares = 123;
-    //
-    // private int numToSubtract = 24;
-    //
-    // private double price = 123.45;
+    // ****Stock.getQuote****
+    private Stock GGGL = new Stock( symbol, companyName, price );
 
 
- 
     @Test
-    public void stock_getQuote_SE_BE()
+    public void stock_getQuote_SE_BE_Test()
     {
-        Stock GGGL = new Stock( symbol, companyName, price );
-        
         String Actual = GGGL.getQuote();
-        String Expected = "Giggle.com (GGGL)\n" + 
-            "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n" + 
-            "Ask: none  Bid: none";
-        //System.out.println(Actual);
-       // System.out.println(Expected);
-
-        assertEquals(Actual, Expected);
-    }
-    @Test
-    public void stock_getQuote_S_BE()
-    {
-        Stock GGGL = new Stock( symbol, companyName, price );
-        
-        String Actual = GGGL.getQuote();
-        String Expected = "Giggle.com (GGGL)\r\n" + 
-            "Price: 12.00  hi: 14.50  lo: 9.00  vol: 500\n" + 
-            "Ask: none  Bid: 12.50 size: 200";
-        //System.out.println(Actual);
-       // System.out.println(Expected);
-
-        assertEquals(Actual, Expected);
+        String Expected = "Giggle.com (GGGL)\n"
+            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+            + "Ask: none  Bid: none";
+        assertEquals( Actual, Expected );
+        GGGL.clearQueues();
 
     }
 
 
-   
+    @Test
+    public void stock_getQuote_S_BE_Test()
+    {
+        TradeOrder t = new TradeOrder( new Trader( null, "Bobo", "1234" ),
+            companyName,
+            false, // sell Order
+            true,
+            5,
+            25.0 );
 
-    // TODO your tests here
+        GGGL.placeOrder( t );
+        String Actual = GGGL.getQuote();
+        String Expected = "Giggle.com (GGGL)\n"
+            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+            + "Ask: 25.00 size: 5  Bid: none";
 
+        assertEquals( Actual, Expected );
+        GGGL.clearQueues();
+
+    }
+
+
+    @Test
+    public void stock_getQuote_SE_B_Test()
+    {
+        TradeOrder t = new TradeOrder( new Trader( null, "Bobo", "1234" ),
+            companyName,
+            true, // buy Order
+            true,
+            5,
+            25.0 );
+
+        GGGL.placeOrder( t );
+        String Actual = GGGL.getQuote();
+        String Expected = "Giggle.com (GGGL)\n"
+            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+            + "Ask: none  Bid: 25.00 size: 5";
+        // System.out.println(Actual);
+        // System.out.println(Expected);
+
+        assertEquals( Actual, Expected );
+        GGGL.clearQueues();
+
+    }
+
+    // ****Stock.placeOrder****
+
+    @Test
+    public void stock_placeOrder_BL_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder t = new TradeOrder( new Trader( null, "Bobo", "1234" ),
+            symbol,
+            true, // buyOrder
+            false, // limit order
+            numShares,
+            price );
+
+        GGGL.placeOrder( t );
+
+        PriorityQueue<TradeOrder> buyOrders = GGGL.getBuyOrders();
+
+        String actual = buyOrders.remove().toString();
+        String expected = t.toString();
+        assertEquals( actual, expected );
+        GGGL.clearQueues();
+
+    }
+
+    @Test
+    public void stock_placeOrder_BM_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder t = new TradeOrder( new Trader( null, "Bobo", "1234" ),
+            symbol,
+            true, // buyOrder
+            true, // market order
+            numShares,
+            price );
+
+        GGGL.placeOrder( t );
+
+        PriorityQueue<TradeOrder> buyOrders = GGGL.getBuyOrders();
+
+        String actual = buyOrders.remove().toString();
+        String expected = t.toString();
+        assertEquals( actual, expected );
+        GGGL.clearQueues();
+
+    }
+
+    @Test
+    public void stock_placeOrder_SL_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder t = new TradeOrder( new Trader( null, "Bobo", "1234" ),
+            symbol,
+            false, // buyOrder
+            false, // limit order
+            numShares,
+            price );
+
+        GGGL.placeOrder( t );
+
+        PriorityQueue<TradeOrder> sellOrders = GGGL.getSellOrders();
+
+        String actual = sellOrders.remove().toString();
+        String expected = t.toString();
+        assertEquals( actual, expected );
+        GGGL.clearQueues();
+
+    }
+
+    @Test
+    public void stock_protectedMethods_Test()
+    {
+        assertEquals( GGGL.getStockSymbol(), "GGGL" );
+        assertEquals( GGGL.getCompanyName(), "Giggle.com" );
+        assertEquals( GGGL.getLoPrice(), 123.45, 0.001 );
+        assertEquals( GGGL.getHiPrice(), 123.45, 0.001 );
+        assertEquals( GGGL.getLastPrice(), 123.45, 0.001 );
+        assertEquals( GGGL.getVolume(), 0 );
+
+    }
+
+    // CHECK W/MR.FULK
+    @Test
+    public void stock_toString_Test()
+    {
+        assertEquals( GGGL.toString(), GGGL.toString() );
+    }
+  
+    @Test
+    public void stock_executeOrders_LL_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            false,
+            numShares,
+            price );
+        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            false, // why does covered instructions go down if I change this to
+                   // false, instead of !BuyOrder.
+            false,
+            numShares,
+            price + 1.0 );
+        GGGL.placeOrder( tbl );
+        GGGL.placeOrder( tsl );
+
+        assertEquals( GGGL.getSellOrders().size(), 1 );
+        assertEquals( GGGL.getBuyOrders().size(), 1 );
+
+        GGGL.clearQueues();
+        tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            false, // why does covered instructions go down if I change this to
+                   // false, instead of !BuyOrder.
+            false,
+            numShares,
+            price );
+
+        GGGL.placeOrder( tbl );
+        GGGL.placeOrder( tsl );
+        assertEquals( GGGL.getSellOrders().size(), 0 );
+        assertEquals( GGGL.getBuyOrders().size(), 0 );
+
+        GGGL.placeOrder( tsl );
+        
+        GGGL.clearQueues();
+
+    }
+
+    @Test
+    public void stock_executeOrders_MM_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            true,
+            numShares,
+            price );
+        TradeOrder tsm = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            false, // why does covered instructions go down if I change this to
+                   // false, instead of !BuyOrder.
+            true,
+            numShares,
+            price + 1.0 );
+        
+        GGGL.placeOrder( tbm );
+        GGGL.placeOrder( tsm );
+        
+        assertEquals(GGGL.getBuyOrders().size(), 0);
+        assertEquals(GGGL.getSellOrders().size(),0);
+        
+        
+    }
+    @Test
+    public void stock_executeOrders_LM_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            true,
+            numShares,
+            price );
+        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            !buyOrder, // why does covered instructions go down if I change this
+                       // to false, instead of !BuyOrder.
+            false,
+            numShares,
+            price + 1.0 );
+        GGGL.placeOrder( tbm );
+        GGGL.placeOrder( tsl );
+        
+        assertEquals(GGGL.getBuyOrders().size(), 1);
+        assertEquals(GGGL.getSellOrders().size(), 1);
+        
+        GGGL.clearQueues();
+        tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            !buyOrder, // why does covered instructions go down if I change this
+                       // to false, instead of !BuyOrder.
+            false,
+            numShares,
+            price - 1.0 );
+        GGGL.placeOrder( tbm );
+        GGGL.placeOrder( tsl );
+        assertEquals(GGGL.getBuyOrders().size(), 0);
+        assertEquals(GGGL.getSellOrders().size(), 0);
+        GGGL.clearQueues();
+        
+        
+        
+        
+        
+
+    }
+
+    public void stock_executeOrders_ML_Test()
+    {
+        GGGL.clearQueues();
+        TradeOrder tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            false,
+            numShares,
+            price );
+        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            false, // why does covered instructions go down if I change this to
+                   // false, instead of !BuyOrder.
+            false,
+            numShares,
+            price + 1.0 );  
+    }
+    
+    
+    
+    
     // Remove block comment below to run JUnit test in console
 
     public static junit.framework.Test suite()

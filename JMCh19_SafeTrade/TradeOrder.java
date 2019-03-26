@@ -51,54 +51,45 @@ public class TradeOrder
         return trader;
     }
 
-
     public String getSymbol()
     {
         return symbol;
     }
-
 
     public boolean isBuy()
     {
         return buyOrder;
     }
 
-
     public boolean isSell()
     {
         return !buyOrder;
     }
-
 
     public boolean isMarket()
     {
         return marketOrder;
     }
 
-
     public boolean isLimit()
     {
         return !marketOrder;
     }
-
 
     public int getShares()
     {
         return numShares;
     }
 
-
     public double getPrice()
     {
         return price;
     }
 
-
     public void subtractShares( int shares )
     {
         numShares -= shares;
     }
-
 
     //
     // The following are for test purposes only
