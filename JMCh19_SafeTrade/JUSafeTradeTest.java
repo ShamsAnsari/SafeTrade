@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -8,7 +9,6 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 import junit.framework.JUnit4TestAdapter;
-
 
 
 /**
@@ -276,7 +276,6 @@ public class JUSafeTradeTest
         75.0 );
 
 
-   
     @Test
     public void priceComparatorMMTest()
     {
@@ -301,7 +300,7 @@ public class JUSafeTradeTest
     {
         PriceComparator pc = new PriceComparator();
         int lm = pc.compare( tOrderLimit1, tOrderMarket1 );
-        assertEquals( lm, 1);
+        assertEquals( lm, 1 );
     }
 
 
@@ -337,10 +336,55 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Stock
-    
+
+    // private String symbol = "GGGL";
+    private String companyName = "Giggle.com";
+    // private boolean buyOrder = true;
+    //
+    // private boolean marketOrder = true;
+    //
+    // private int numShares = 123;
+    //
+    // private int numToSubtract = 24;
+    //
+    // private double price = 123.45;
+
+
+ 
+    @Test
+    public void stock_getQuote_SE_BE()
+    {
+        Stock GGGL = new Stock( symbol, companyName, price );
+        
+        String Actual = GGGL.getQuote();
+        String Expected = "Giggle.com (GGGL)\n" + 
+            "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n" + 
+            "Ask: none  Bid: none";
+        //System.out.println(Actual);
+       // System.out.println(Expected);
+
+        assertEquals(Actual, Expected);
+    }
+    @Test
+    public void stock_getQuote_S_BE()
+    {
+        Stock GGGL = new Stock( symbol, companyName, price );
+        
+        String Actual = GGGL.getQuote();
+        String Expected = "Giggle.com (GGGL)\r\n" + 
+            "Price: 12.00  hi: 14.50  lo: 9.00  vol: 500\n" + 
+            "Ask: none  Bid: 12.50 size: 200";
+        //System.out.println(Actual);
+       // System.out.println(Expected);
+
+        assertEquals(Actual, Expected);
+
+    }
+
+
+   
 
     // TODO your tests here
-
 
     // Remove block comment below to run JUnit test in console
 
