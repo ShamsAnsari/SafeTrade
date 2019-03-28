@@ -16,9 +16,9 @@ import junit.framework.JUnit4TestAdapter;
  * SafeTrade tests: TradeOrder PriceComparator Trader Brokerage StockExchange
  * Stock
  *
- * @author TODO Name of principal author
- * @author TODO Name of group member
- * @author TODO Name of group member
+ * @author Elisa Yang
+ * @author Leo Shaw
+ * @author Shams Ansari
  * @version TODO date
  * @author Assignment: JM Chapter 19 - SafeTrade
  * 
