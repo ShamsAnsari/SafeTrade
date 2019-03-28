@@ -255,6 +255,7 @@ public class JUSafeTradeTest
 
 
     // --Test Trader
+    // Take out jacocoData synthetic Java field 
     @Test
     public void traderConstructorTest()
     {
@@ -262,11 +263,13 @@ public class JUSafeTradeTest
         Brokerage b = new Brokerage( s );
         Trader t = new Trader( b, "trader", "password" );
 
+        String str =  "Trader[Brokerage brokerage, java.lang.String screenName:trader, "
+                        + "java.lang.String password:password, TraderWindow myWindow:null, "
+                        + "java.util.Queue mailbox:[]]";
+        t.clearMail();
         assertEquals(
-            "Trader[Brokerage brokerage, java.lang.String screenName:trader, "
-                + "java.lang.String password:password, TraderWindow myWindow:null, "
-                + "java.util.Queue mailbox:[]]",
-            t.toString() );
+           str,
+            t.toString().substring( 0, str.length() - 1) + "]" );
     }
 
 

@@ -167,7 +167,11 @@ public class Trader implements Comparable<Trader>
     {
         return mailbox;
     }
-
+    
+    protected void clearMail()
+    {
+        mailbox.clear();
+    }
 
     /**
      * <p>
