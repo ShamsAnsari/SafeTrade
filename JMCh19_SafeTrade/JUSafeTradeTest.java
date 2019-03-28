@@ -180,25 +180,9 @@ public class JUSafeTradeTest
     }
 
 
-    // --Test TraderWindow Stub
-//    @Test
-//    public void traderWindowConstructor()
-//    {
-//        TraderWindow tw = new TraderWindow( null );
-//        assertNotNull( tw );
-//    }
-
-
-//    @Test
-//    public void traderWindowShowMessage()
-//    {
-//        TraderWindow tw = new TraderWindow( null );
-//        assertNotNull( tw );
-//        tw.showMessage( null );
-//    }
     // --Test PriceComparator
 
-    // new Trader( new Brokerage( new StockExchange() )
+    
     private TradeOrder tOrderMarket1 = new TradeOrder( null, null, true, true, 0, 0.0 );
 
     private TradeOrder tOrderMarket2 = new TradeOrder( null, null, true, true, 0, 0.0 );
@@ -289,24 +273,19 @@ public class JUSafeTradeTest
     }
 
 
-    @Test
+    @Test(expected = ClassCastException.class)
     public void traderEqualsTest()
     {
-        Object fail = new Object();
-        Trader t1 = new Trader( null, "Zach", "pass" );
-        Trader t2 = new Trader( null, "Zach", "word" );
-
-        try
-        {
-            t1.equals( fail );
-            fail( "no exception" );
-        }
-        catch ( ClassCastException c )
-        {
-            return;
-        }
-
-        assertEquals( 0, t1.compareTo( t2 ) );
+      
+        Trader t1 = new Trader( new Brokerage(new StockExchange()), "Zach", "pass" );
+        Trader t2 = new Trader( new Brokerage(new StockExchange()), "Zach", "word" );    
+        String t3 = "Zach";
+        Trader Bobo = new Trader( new Brokerage(new StockExchange()), "Bobo", "word" );    
+        assertTrue( t1.equals( t2 ));
+        assertFalse(Bobo.equals( t1 ));
+        t1.equals( t3 );
+        
+        
     }
 
 
@@ -361,10 +340,13 @@ public class JUSafeTradeTest
     @Test
     public void traderReceiveMessageTest()
     {
-        Trader t1 = new Trader( null, "Zach", "pass" );
+        
+        Trader t1 = new Trader( null, "Zach", "pass" );  
         t1.receiveMessage( "msg" );
-
         assertTrue( t1.hasMessages() );
+        t1.openWindow();
+        t1.receiveMessage( "msg2" );
+        assertFalse( t1.hasMessages() );
     }
 
 
@@ -381,19 +363,17 @@ public class JUSafeTradeTest
         assertTrue( t1.hasMessages() );
     }
 
-
+    @Test
     public void traderQuitTest()
     {
         StockExchange s = new StockExchange();
         Brokerage b = new Brokerage( s );
-        // s.listStock( "AAPL", "Apple", 1000.0 );
-        Trader t1 = new Trader( b, "Zach", "pass" );
+        Trader t1 = new Trader( b, "Bobo", "pass" );       
         b.addUser( "Zach", "pass" );
         b.login( "Zach", "pass" );
-
-        int initTraders = b.getLoggedTraders().size();
         t1.quit();
-        assertEquals( initTraders - 1, b.getLoggedTraders().size() );
+        assertFalse(b.getLoggedTraders().contains( t1));
+        
     }
 
 
@@ -413,7 +393,6 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Stock
-    // ****Stock.getQuote****
     private Stock GGGL = new Stock( symbol, companyName, price );
 
 
@@ -472,8 +451,6 @@ public class JUSafeTradeTest
 
     }
 
-
-    // ****Stock.placeOrder****
 
     @Test
     public void stock_placeOrder_BL_Test()
@@ -557,11 +534,10 @@ public class JUSafeTradeTest
     }
 
 
-    // CHECK W/MR.FULK
     @Test
     public void stock_toString_Test()
     {
-        assertEquals( GGGL.toString(), GGGL.toString() );
+        assertNotNull(GGGL.toString());
     }
 
 
