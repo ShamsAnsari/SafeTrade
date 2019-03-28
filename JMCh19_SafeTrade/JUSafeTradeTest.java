@@ -342,117 +342,87 @@ public class JUSafeTradeTest
 
     // --Test Trader
     @Test
+    public void traderConstructorTest()
+    {
+        StockExchange s = new StockExchange();
+        Brokerage b = new Brokerage( s );
+        Trader t = new Trader( b, "trader", "password" );
+
+        assertEquals(
+            "Trader[Brokerage brokerage, java.lang.String screenName:trader, "
+                + "java.lang.String password:password, TraderWindow myWindow:null, "
+                + "java.util.Queue mailbox:[]]",
+            t.toString() );
+    }
+
+
+    @Test
     public void traderGetNameTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        assertEquals( t.getName(), "Steve" );
+        Trader t = new Trader( null, "Steve", "password" );
+        assertEquals( "Steve", t.getName() );
     }
 
 
     @Test
     public void traderGetPassTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        assertEquals( t.getPassword(), "12345" );
+        Trader t = new Trader( null, "Steve", "password" );
+        assertEquals( "password", t.getPassword() );
     }
 
 
     @Test
-    public void traderCompareToZeroTest()
+    public void traderEqualsTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        Trader s = new Trader( null, "Steve", "54321" );
-        assertEquals( t.compareTo( s ), 0 );
+        Object fail = new Object();
+        Trader t1 = new Trader( null, "Zach", "pass" );
+        Trader t2 = new Trader( null, "Zach", "word" );
+
+        try
+        {
+            t1.equals( fail );
+            fail( "no exception" );
+        }
+        catch ( ClassCastException c )
+        {
+            return;
+        }
+
+        assertEquals( 0, t1.compareTo( t2 ) );
     }
 
 
     @Test
-    public void traderCompareToNegativeTest()
+    public void traderCompareToTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        Trader s = new Trader( null, "Zachary", "54321" );
-        assertEquals( -7, t.compareTo( s ) );
+        Trader t1 = new Trader( null, "Zach", "pass" );
+        Trader t2 = new Trader( null, "Zach", "word" );
+        Trader t3 = new Trader( null, "Zachary", "password" );
+
+        assertEquals( -3, t1.compareTo( t3 ) );
+        assertEquals( 0, t1.compareTo( t2 ) );
     }
 
 
     @Test
-    public void traderCompareToPositiveTest()
+    public void traderOpenWindowTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        Trader s = new Trader( null, "Zachary", "54321" );
-        assertEquals( 7, s.compareTo( t ) );
+        Trader t1 = new Trader( null, "Zach", "pass" );
+        t1.openWindow();
+
+        assertEquals( false, t1.hasMessages() );
     }
 
 
     @Test
-    public void traderEqualsExceptionTest()
+    public void traderHasMessagesTest()
     {
-        Trader t = new Trader( null, "Steve", "12345" );
-        String fail = "hi";
-        // assertThrows(ClassCastException.class, t.equals( fail ));
-    }
+        Trader t1 = new Trader( null, "Zach", "pass" );
 
+        t1.mailbox().add( "message" );
 
-    @Test
-    public void traderEqualsTrueTest()
-    {
-        Trader t = new Trader( null, "Steve", "12345" );
-        Trader s = new Trader( null, "Steve", "54321" );
-        assertTrue( t.equals( s ) );
-    }
-
-
-    @Test
-    public void traderEqualsFalseTest()
-    {
-        Trader t = new Trader( null, "Steve", "12345" );
-        Trader s = new Trader( null, "Zachary", "54321" );
-        assertFalse( t.equals( s ) );
-    }
-
-
-    @Test
-    public void idkhowtoopenWindowTest()
-    {
-
-    }
-
-
-    @Test
-    public void idkhowtoquitTest()
-    {
-
-    }
-
-
-    @Test
-    public void idkhowtoplaceOrderTest()
-    {
-
-    }
-
-
-    @Test
-    public void idkhowtoreceiveMessageTest()
-    {
-
-    }
-
-
-    @Test
-    public void traderHasMessagesFalse()
-    {
-        Trader t = new Trader( null, "Steve", "12345" );
-        assertFalse( t.hasMessages() );
-    }
-
-
-    @Test
-    public void traderHasMessagesTrue()
-    {
-        Trader t = new Trader( null, "Steve", "12345" );
-        t.receiveMessage( "hi" );
-        assertTrue( t.hasMessages() );
+        assertTrue( t1.hasMessages() );
     }
 
 
@@ -460,25 +430,61 @@ public class JUSafeTradeTest
     public void traderGetQuoteTest()
     {
         StockExchange s = new StockExchange();
-        String symbol = "AAPL";
-        s.listStock( symbol, "Apple", 100.0 );
         Brokerage b = new Brokerage( s );
-        Trader t = new Trader( b, "Steve", "12345" );
-        // IDK
+        s.listStock( "AAPL", "Apple", 1000.0 );
+        Trader t1 = new Trader( b, "Zach", "pass" );
+
+        int initSize = t1.mailbox().size();
+        t1.getQuote( "AAPL" );
+
+        assertEquals( initSize + 1, t1.mailbox().size() );
     }
 
 
     @Test
-    public void traderMailboxTest()
+    public void traderReceiveMessageTest()
     {
-        LinkedList<String> mail = new LinkedList<String>();
-        mail.add( "message" );
-        Trader t = new Trader( null, "Steve", "12345" );
-        t.receiveMessage( "message" );
+        Trader t1 = new Trader( null, "Zach", "pass" );
+        t1.receiveMessage( "msg" );
 
-        assertEquals( t.mailbox(), mail );
+        assertTrue( t1.hasMessages() );
     }
 
+
+    @Test
+    public void traderPlaceOrderTest()
+    {
+        StockExchange s = new StockExchange();
+        s.listStock( "AAPL", "Apple", 1000.0 );
+
+        Brokerage b = new Brokerage( s );
+        Trader t1 = new Trader( b, "Zach", "pass" );
+
+        t1.placeOrder( new TradeOrder( t1, "AAPL", false, false, 30, 100.0 ) );
+        assertTrue( t1.hasMessages() );
+    }
+
+
+    public void traderQuitTest()
+    {
+        StockExchange s = new StockExchange();
+        Brokerage b = new Brokerage( s );
+        // s.listStock( "AAPL", "Apple", 1000.0 );
+        Trader t1 = new Trader( b, "Zach", "pass" );
+        b.addUser( "Zach", "pass" );
+        b.login( "Zach", "pass" );
+
+        int initTraders = b.getLoggedTraders().size();
+        t1.quit();
+        assertEquals( initTraders - 1, b.getLoggedTraders().size() );
+    }
+
+
+    public void traderToStringTest()
+    {
+        Trader t1 = new Trader( null, "Zach", "pass" );
+        assertNotNull( t1.toString() );
+    }
     // TODO your tests here
 
     // --Test Brokerage
