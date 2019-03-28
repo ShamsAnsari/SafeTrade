@@ -14,6 +14,10 @@ import java.lang.reflect.*;
  *
  * @author Sources: none
  */
+/**
+ * @author Shams
+ *
+ */
 public class TradeOrder
 {
     private Trader trader;
@@ -29,6 +33,17 @@ public class TradeOrder
     private double price;
 
 
+    /**
+     * @param trader
+     *            - The Trader
+     * @param symbol
+     *            - The Symbol
+     * @param buyOrder
+     *            - BuyORder
+     * @param marketOrder
+     * @param numShares
+     * @param price
+     */
     public TradeOrder(
         Trader trader,
         String symbol,
@@ -46,50 +61,87 @@ public class TradeOrder
     }
 
 
+    /**
+     * @return the trader
+     */
     public Trader getTrader()
     {
         return trader;
     }
 
+
+    /**
+     * @return the symbol
+     */
     public String getSymbol()
     {
         return symbol;
     }
 
+
+    /**
+     * @return if it is buy
+     */
     public boolean isBuy()
     {
         return buyOrder;
     }
 
+
+    /**
+     * @return if it is a sell
+     */
     public boolean isSell()
     {
         return !buyOrder;
     }
 
+
+    /**
+     * @return if it is a market
+     */
     public boolean isMarket()
     {
         return marketOrder;
     }
 
+
+    /**
+     * @return returns if it is a limit
+     */
     public boolean isLimit()
     {
         return !marketOrder;
     }
 
+
+    /**
+     * @return returns shares
+     */
     public int getShares()
     {
         return numShares;
     }
 
+
+    /**
+     * @return returns price
+     */
     public double getPrice()
     {
         return price;
     }
 
+
+    /**
+     * @param shares
+     *            number of shares
+     */
     public void subtractShares( int shares )
     {
         numShares -= shares;
     }
+
 
     //
     // The following are for test purposes only
@@ -114,8 +166,8 @@ public class TradeOrder
         {
             try
             {
-                str += separator + field.getType().getName() + " "
-                    + field.getName() + ":" + field.get( this );
+                str += separator + field.getType().getName() + " " + field.getName() + ":"
+                    + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {
