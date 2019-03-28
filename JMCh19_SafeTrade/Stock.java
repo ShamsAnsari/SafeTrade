@@ -137,7 +137,7 @@ public class Stock
 
         while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
-            // System.out.println( "stock.executeOrders 2" );
+            System.out.println( "stock.executeOrders 2" );
 
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
@@ -159,7 +159,7 @@ public class Stock
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice < sellOrderPrice ) )
             {
-                // System.out.println( "stock.executeOrders 3" );
+                 System.out.println( "stock.executeOrders 3" );
                 break;
             }
             /*
@@ -168,7 +168,7 @@ public class Stock
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice > lastPrice ) )
             {
-                // System.out.println( "stock.executeOrders 4" );
+                System.out.println( "stock.executeOrders 4" );
                 break;
             }
             /*
@@ -177,11 +177,11 @@ public class Stock
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice < lastPrice ) )
             {
-                // System.out.println( "stock.executeOrders 5" );
+                 System.out.println( "stock.executeOrders 5" );
                 break;
             }
 
-            // System.out.println( "stock.executeOrders 6" );
+            System.out.println( "stock.executeOrders 6" );
             /*
              * If the seller wants to sell at a certain price and the buy wants
              * to buy at a certain price. Then checks if the buyers' price is
@@ -190,7 +190,7 @@ public class Stock
              * selling price. Executes the order at the seller's price.
              * 
              */
-            else if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
+             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
                 execHelper( sharesSell,

@@ -74,12 +74,7 @@ public class JUSafeTradeTest
     @Test
     public void tradeOrderConstructor()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
         String toStr = to.toString();
 
         assertTrue( "<< Invalid TradeOrder Constructor >>",
@@ -95,12 +90,7 @@ public class JUSafeTradeTest
     @Test
     public void TradeOrderToString()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
         assertNotNull( to.toString() );
     }
 
@@ -108,58 +98,35 @@ public class JUSafeTradeTest
     @Test
     public void tradeOrderGetTrader()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertNull( "<< TradeOrder: " + to.getTrader() + " should be null >>",
-            to.getTrader() );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertNull( "<< TradeOrder: " + to.getTrader() + " should be null >>", to.getTrader() );
     }
 
 
     @Test
     public void tradeOrderGetSymbol()
     {
-        TradeOrder to = new TradeOrder( null,
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertEquals( "<< TradeOrder: " + to.getTrader() + " should be " + symbol + " >>",
             symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertEquals( "<< TradeOrder: " + to.getTrader() + " should be "
-            + symbol + " >>", symbol, to.getSymbol() );
+            to.getSymbol() );
     }
 
 
     @Test
     public void tradeOrderIsBuy()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
 
-        assertTrue(
-            "<< TradeOrder: " + to.isBuy() + " should be " + buyOrder + " >>",
-            to.isBuy() );
+        assertTrue( "<< TradeOrder: " + to.isBuy() + " should be " + buyOrder + " >>", to.isBuy() );
     }
 
 
     @Test
     public void tradeOrderIsSell()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertFalse(
-            "<< TradeOrder: " + to.isSell() + " should be " + !buyOrder + " >>",
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertFalse( "<< TradeOrder: " + to.isSell() + " should be " + !buyOrder + " >>",
             to.isSell() );
     }
 
@@ -167,15 +134,8 @@ public class JUSafeTradeTest
     @Test
     public void tradeOrderIsMarket()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertTrue(
-            "<< TradeOrder: " + to.isMarket() + " should be " + marketOrder
-                + " >>",
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertTrue( "<< TradeOrder: " + to.isMarket() + " should be " + marketOrder + " >>",
             to.isMarket() );
     }
 
@@ -183,16 +143,9 @@ public class JUSafeTradeTest
     @Test
     public void tradeOrderIsLimit()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
 
-        assertFalse(
-            "<< TradeOrder: " + to.isLimit() + " should be " + !marketOrder
-                + ">>",
+        assertFalse( "<< TradeOrder: " + to.isLimit() + " should be " + !marketOrder + ">>",
             to.isLimit() );
     }
 
@@ -200,49 +153,30 @@ public class JUSafeTradeTest
     @Test
     public void tradeOrderGetShares()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertTrue(
-            "<< TradeOrder: " + to.getShares() + " should be " + numShares
-                + ">>",
-            numShares == to.getShares()
-                || ( numShares - numToSubtract ) == to.getShares() );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertTrue( "<< TradeOrder: " + to.getShares() + " should be " + numShares + ">>",
+            numShares == to.getShares() || ( numShares - numToSubtract ) == to.getShares() );
     }
 
 
     @Test
     public void tradeOrderGetPrice()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
-        assertEquals( "<< TradeOrder: " + to.getPrice() + " should be " + price
-            + ">>", price, to.getPrice(), 0.0 );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
+        assertEquals( "<< TradeOrder: " + to.getPrice() + " should be " + price + ">>",
+            price,
+            to.getPrice(),
+            0.0 );
     }
 
 
     @Test
     public void tradeOrderSubtractShares()
     {
-        TradeOrder to = new TradeOrder( null,
-            symbol,
-            buyOrder,
-            marketOrder,
-            numShares,
-            price );
+        TradeOrder to = new TradeOrder( null, symbol, buyOrder, marketOrder, numShares, price );
         to.subtractShares( numToSubtract );
-        assertEquals(
-            "<< TradeOrder: subtractShares(" + numToSubtract + ") should be "
-                + ( numShares - numToSubtract ) + ">>",
-            numShares - numToSubtract,
-            to.getShares() );
+        assertEquals( "<< TradeOrder: subtractShares(" + numToSubtract + ") should be "
+            + ( numShares - numToSubtract ) + ">>", numShares - numToSubtract, to.getShares() );
     }
 
 
@@ -265,33 +199,13 @@ public class JUSafeTradeTest
     // --Test PriceComparator
 
     // new Trader( new Brokerage( new StockExchange() )
-    private TradeOrder tOrderMarket1 = new TradeOrder( null,
-        null,
-        true,
-        true,
-        0,
-        0.0 );
+    private TradeOrder tOrderMarket1 = new TradeOrder( null, null, true, true, 0, 0.0 );
 
-    private TradeOrder tOrderMarket2 = new TradeOrder( null,
-        null,
-        true,
-        true,
-        0,
-        0.0 );
+    private TradeOrder tOrderMarket2 = new TradeOrder( null, null, true, true, 0, 0.0 );
 
-    private TradeOrder tOrderLimit1 = new TradeOrder( null,
-        null,
-        true,
-        false,
-        0,
-        100.0 );
+    private TradeOrder tOrderLimit1 = new TradeOrder( null, null, true, false, 0, 100.0 );
 
-    private TradeOrder tOrderLimit2 = new TradeOrder( null,
-        null,
-        true,
-        false,
-        0,
-        75.0 );
+    private TradeOrder tOrderLimit2 = new TradeOrder( null, null, true, false, 0, 75.0 );
 
 
     @Test
@@ -504,8 +418,7 @@ public class JUSafeTradeTest
     public void stock_getQuote_SE_BE_Test()
     {
         String Actual = GGGL.getQuote();
-        String Expected = "Giggle.com (GGGL)\n"
-            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+        String Expected = "Giggle.com (GGGL)\n" + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
             + "Ask: none  Bid: none";
         assertEquals( Actual, Expected );
         GGGL.clearQueues();
@@ -525,8 +438,7 @@ public class JUSafeTradeTest
 
         GGGL.placeOrder( t );
         String Actual = GGGL.getQuote();
-        String Expected = "Giggle.com (GGGL)\n"
-            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+        String Expected = "Giggle.com (GGGL)\n" + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
             + "Ask: 25.00 size: 5  Bid: none";
 
         assertEquals( Actual, Expected );
@@ -547,8 +459,7 @@ public class JUSafeTradeTest
 
         GGGL.placeOrder( t );
         String Actual = GGGL.getQuote();
-        String Expected = "Giggle.com (GGGL)\n"
-            + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
+        String Expected = "Giggle.com (GGGL)\n" + "Price: 123.45  hi: 123.45  lo: 123.45  vol: 0\n"
             + "Ask: none  Bid: 25.00 size: 5";
         // System.out.println(Actual);
         // System.out.println(Expected);
@@ -557,6 +468,7 @@ public class JUSafeTradeTest
         GGGL.clearQueues();
 
     }
+
 
     // ****Stock.placeOrder****
 
@@ -582,6 +494,7 @@ public class JUSafeTradeTest
 
     }
 
+
     @Test
     public void stock_placeOrder_BM_Test()
     {
@@ -603,6 +516,7 @@ public class JUSafeTradeTest
         GGGL.clearQueues();
 
     }
+
 
     @Test
     public void stock_placeOrder_SL_Test()
@@ -626,6 +540,7 @@ public class JUSafeTradeTest
 
     }
 
+
     @Test
     public void stock_protectedMethods_Test()
     {
@@ -638,13 +553,15 @@ public class JUSafeTradeTest
 
     }
 
+
     // CHECK W/MR.FULK
     @Test
     public void stock_toString_Test()
     {
         assertEquals( GGGL.toString(), GGGL.toString() );
     }
-  
+
+
     @Test
     public void stock_executeOrders_LL_Test()
     {
@@ -683,10 +600,11 @@ public class JUSafeTradeTest
         assertEquals( GGGL.getBuyOrders().size(), 0 );
 
         GGGL.placeOrder( tsl );
-        
+
         GGGL.clearQueues();
 
     }
+
 
     @Test
     public void stock_executeOrders_MM_Test()
@@ -705,15 +623,16 @@ public class JUSafeTradeTest
             true,
             numShares,
             price + 1.0 );
-        
+
         GGGL.placeOrder( tbm );
         GGGL.placeOrder( tsm );
-        
-        assertEquals(GGGL.getBuyOrders().size(), 0);
-        assertEquals(GGGL.getSellOrders().size(),0);
-        
-        
+
+        assertEquals( GGGL.getBuyOrders().size(), 0 );
+        assertEquals( GGGL.getSellOrders().size(), 0 );
+
     }
+
+
     @Test
     public void stock_executeOrders_LM_Test()
     {
@@ -733,10 +652,10 @@ public class JUSafeTradeTest
             price + 1.0 );
         GGGL.placeOrder( tbm );
         GGGL.placeOrder( tsl );
-        
-        assertEquals(GGGL.getBuyOrders().size(), 1);
-        assertEquals(GGGL.getSellOrders().size(), 1);
-        
+
+        assertEquals( GGGL.getBuyOrders().size(), 1 );
+        assertEquals( GGGL.getSellOrders().size(), 1 );
+
         GGGL.clearQueues();
         tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
             symbol,
@@ -747,38 +666,96 @@ public class JUSafeTradeTest
             price - 1.0 );
         GGGL.placeOrder( tbm );
         GGGL.placeOrder( tsl );
-        assertEquals(GGGL.getBuyOrders().size(), 0);
-        assertEquals(GGGL.getSellOrders().size(), 0);
+        assertEquals( GGGL.getBuyOrders().size(), 0 );
+        assertEquals( GGGL.getSellOrders().size(), 0 );
         GGGL.clearQueues();
-        
-        
-        
-        
-        
 
     }
 
+
+    @Test
     public void stock_executeOrders_ML_Test()
     {
         GGGL.clearQueues();
         TradeOrder tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
             symbol,
-            buyOrder,
+            true,
             false,
             numShares,
-            price );
-        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            price - 1.0 );
+        TradeOrder tsm = new TradeOrder( new Trader( null, "Philbert", "1234" ),
             symbol,
             false, // why does covered instructions go down if I change this to
                    // false, instead of !BuyOrder.
+            true,
+            numShares,
+            price );
+        GGGL.placeOrder( tbl );
+        GGGL.placeOrder( tsm );
+
+        assertEquals( GGGL.getBuyOrders().size(), 1 );
+        assertEquals( GGGL.getSellOrders().size(), 1 );
+
+        GGGL.clearQueues();
+
+        tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            true,
             false,
             numShares,
-            price + 1.0 );  
+            price + 1.0 );
+        GGGL.placeOrder( tbl );
+        GGGL.placeOrder( tsm );
+
+        assertEquals( GGGL.getBuyOrders().size(), 0 );
+        assertEquals( GGGL.getSellOrders().size(), 0 );
+
     }
-    
-    
-    
-    
+
+
+    @Test
+    public void stock_addToQueue()
+    {
+        TradeOrder tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            true,
+            numShares,
+            price );
+        GGGL.clearQueues();
+        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
+            symbol,
+            !buyOrder, // why does covered instructions go down if I change this
+                       // to false, instead of !BuyOrder.
+            false,
+            numShares  + 1,
+            price - 1.0 );
+        
+        GGGL.placeOrder( tbm );
+        GGGL.placeOrder( tsl );
+        
+        assertEquals( GGGL.getBuyOrders().size(), 0 );
+        assertEquals( GGGL.getSellOrders().size(), 1);
+        
+        GGGL.clearQueues();
+        
+        tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
+            symbol,
+            buyOrder,
+            true,
+            numShares + 2,
+            price );
+        GGGL.placeOrder( tbm );
+        GGGL.placeOrder( tsl );
+        
+        
+        assertEquals( GGGL.getBuyOrders().size(), 1 );
+        assertEquals( GGGL.getSellOrders().size(), 0);
+        
+
+    }
+
+
     // Remove block comment below to run JUnit test in console
 
     public static junit.framework.Test suite()
