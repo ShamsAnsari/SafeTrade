@@ -181,21 +181,21 @@ public class JUSafeTradeTest
 
 
     // --Test TraderWindow Stub
-    @Test
-    public void traderWindowConstructor()
-    {
-        TraderWindow tw = new TraderWindow( null );
-        assertNotNull( tw );
-    }
+//    @Test
+//    public void traderWindowConstructor()
+//    {
+//        TraderWindow tw = new TraderWindow( null );
+//        assertNotNull( tw );
+//    }
 
 
-    @Test
-    public void traderWindowShowMessage()
-    {
-        TraderWindow tw = new TraderWindow( null );
-        assertNotNull( tw );
-        tw.showMessage( null );
-    }
+//    @Test
+//    public void traderWindowShowMessage()
+//    {
+//        TraderWindow tw = new TraderWindow( null );
+//        assertNotNull( tw );
+//        tw.showMessage( null );
+//    }
     // --Test PriceComparator
 
     // new Trader( new Brokerage( new StockExchange() )
