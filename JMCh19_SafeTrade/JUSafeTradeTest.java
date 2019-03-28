@@ -179,10 +179,8 @@ public class JUSafeTradeTest
             + ( numShares - numToSubtract ) + ">>", numShares - numToSubtract, to.getShares() );
     }
 
-
     // --Test PriceComparator
 
-    
     private TradeOrder tOrderMarket1 = new TradeOrder( null, null, true, true, 0, 0.0 );
 
     private TradeOrder tOrderMarket2 = new TradeOrder( null, null, true, true, 0, 0.0 );
@@ -239,7 +237,7 @@ public class JUSafeTradeTest
 
 
     // --Test Trader
-    // Take out jacocoData synthetic Java field 
+    // Take out jacocoData synthetic Java field
     @Test
     public void traderConstructorTest()
     {
@@ -247,13 +245,11 @@ public class JUSafeTradeTest
         Brokerage b = new Brokerage( s );
         Trader t = new Trader( b, "trader", "password" );
 
-        String str =  "Trader[Brokerage brokerage, java.lang.String screenName:trader, "
-                        + "java.lang.String password:password, TraderWindow myWindow:null, "
-                        + "java.util.Queue mailbox:[]]";
+        String str = "Trader[Brokerage brokerage, java.lang.String screenName:trader, "
+            + "java.lang.String password:password, TraderWindow myWindow:null, "
+            + "java.util.Queue mailbox:[]]";
         t.clearMail();
-        assertEquals(
-           str,
-            t.toString().substring( 0, str.length() - 1) + "]" );
+        assertEquals( str, t.toString().substring( 0, str.length() - 1 ) + "]" );
     }
 
 
@@ -276,16 +272,15 @@ public class JUSafeTradeTest
     @Test(expected = ClassCastException.class)
     public void traderEqualsTest()
     {
-      
-        Trader t1 = new Trader( new Brokerage(new StockExchange()), "Zach", "pass" );
-        Trader t2 = new Trader( new Brokerage(new StockExchange()), "Zach", "word" );    
+
+        Trader t1 = new Trader( new Brokerage( new StockExchange() ), "Zach", "pass" );
+        Trader t2 = new Trader( new Brokerage( new StockExchange() ), "Zach", "word" );
         String t3 = "Zach";
-        Trader Bobo = new Trader( new Brokerage(new StockExchange()), "Bobo", "word" );    
-        assertTrue( t1.equals( t2 ));
-        assertFalse(Bobo.equals( t1 ));
+        Trader Bobo = new Trader( new Brokerage( new StockExchange() ), "Bobo", "word" );
+        assertTrue( t1.equals( t2 ) );
+        assertFalse( Bobo.equals( t1 ) );
         t1.equals( t3 );
-        
-        
+
     }
 
 
@@ -340,8 +335,8 @@ public class JUSafeTradeTest
     @Test
     public void traderReceiveMessageTest()
     {
-        
-        Trader t1 = new Trader( null, "Zach", "pass" );  
+
+        Trader t1 = new Trader( null, "Zach", "pass" );
         t1.receiveMessage( "msg" );
         assertTrue( t1.hasMessages() );
         t1.openWindow();
@@ -363,20 +358,21 @@ public class JUSafeTradeTest
         assertTrue( t1.hasMessages() );
     }
 
+
     @Test
     public void traderQuitTest()
     {
         StockExchange s = new StockExchange();
         Brokerage b = new Brokerage( s );
-        Trader t1 = new Trader( b, "Bobo", "pass" );       
+        Trader t1 = new Trader( b, "Bobo", "pass" );
         b.addUser( "Zach", "pass" );
         b.login( "Zach", "pass" );
         t1.quit();
-        assertFalse(b.getLoggedTraders().contains( t1));
-        
+        assertFalse( b.getLoggedTraders().contains( t1 ) );
+
     }
 
-
+    @Test
     public void traderToStringTest()
     {
         Trader t1 = new Trader( null, "Zach", "pass" );
@@ -385,7 +381,13 @@ public class JUSafeTradeTest
     // TODO your tests here
 
     // --Test Brokerage
-
+    @Test
+    public void brokeragetoString_Test()
+    {
+        Brokerage b = new  Brokerage(new StockExchange());
+        assertNotNull(b.toString());
+    }
+    
     // TODO your tests here
 
     // --Test StockExchange
@@ -537,7 +539,7 @@ public class JUSafeTradeTest
     @Test
     public void stock_toString_Test()
     {
-        assertNotNull(GGGL.toString());
+        assertNotNull( GGGL.toString() );
     }
 
 
@@ -707,17 +709,17 @@ public class JUSafeTradeTest
             !buyOrder, // why does covered instructions go down if I change this
                        // to false, instead of !BuyOrder.
             false,
-            numShares  + 1,
+            numShares + 1,
             price - 1.0 );
-        
+
         GGGL.placeOrder( tbm );
         GGGL.placeOrder( tsl );
-        
+
         assertEquals( GGGL.getBuyOrders().size(), 0 );
-        assertEquals( GGGL.getSellOrders().size(), 1);
-        
+        assertEquals( GGGL.getSellOrders().size(), 1 );
+
         GGGL.clearQueues();
-        
+
         tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
             symbol,
             buyOrder,
@@ -726,11 +728,9 @@ public class JUSafeTradeTest
             price );
         GGGL.placeOrder( tbm );
         GGGL.placeOrder( tsl );
-        
-        
+
         assertEquals( GGGL.getBuyOrders().size(), 1 );
-        assertEquals( GGGL.getSellOrders().size(), 0);
-        
+        assertEquals( GGGL.getSellOrders().size(), 0 );
 
     }
 
