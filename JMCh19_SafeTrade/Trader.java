@@ -1,4 +1,3 @@
-import java.awt.GraphicsConfiguration;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -19,7 +18,9 @@ public class Trader implements Comparable<Trader>
 {
     private Brokerage brokerage;
 
-    private String screenName, password;
+    private String screenName;
+
+    private String password;
 
     private TraderWindow myWindow;
 
@@ -72,6 +73,9 @@ public class Trader implements Comparable<Trader>
      * Compares this trader to another by comparing their screen names case
      * blind
      * 
+     * @param other
+     *            the other trader.
+     * 
      * @return compare value
      */
     public int compareTo( Trader other )
@@ -84,19 +88,21 @@ public class Trader implements Comparable<Trader>
      * Indicates whether some other trader is "equal to" this one, based on
      * comparing their screen names case blind
      * 
+     * @param other
+     *            other object
      * @return equals
      */
     public boolean equals( Object other )
     {
 
-        System.out.println("first");
+        System.out.println( "first" );
         if ( !( other instanceof Trader ) )
         {
-            System.out.println("if not inst branch");
+            System.out.println( "if not inst branch" );
             throw new ClassCastException();
         }
 
-        System.out.println("default");
+        System.out.println( "default" );
         return ( (Trader)other ).screenName.equalsIgnoreCase( this.screenName );
 
     }
@@ -146,18 +152,37 @@ public class Trader implements Comparable<Trader>
     }
 
 
+    /**
+     * gets quote
+     * 
+     * @param symbol
+     *            The symbol of the company
+     */
     public void getQuote( String symbol )
     {
         brokerage.getQuote( symbol, this );
     }
 
 
+    /**
+     * calls brokerage's placetrade
+     * 
+     * @param order
+     *            the tradeOrder
+     */
     public void placeOrder( TradeOrder order )
     {
-        brokerage.placeOrder( order );
+
+        if ( order != null )
+        {
+            brokerage.placeOrder( order );
+        }
     }
 
 
+    /**
+     * Quits
+     */
     public void quit()
     {
         brokerage.logout( this );
@@ -168,12 +193,20 @@ public class Trader implements Comparable<Trader>
     //
     // The following are for test purposes only
     //
+    /**
+     * Returns the mailbox
+     * 
+     * @return mailbox
+     */
     protected Queue<String> mailbox()
     {
         return mailbox;
     }
 
 
+    /**
+     * clears the mail
+     */
     protected void clearMail()
     {
         mailbox.clear();
@@ -201,10 +234,15 @@ public class Trader implements Comparable<Trader>
             try
             {
                 if ( field.getType().getName().equals( "Brokerage" ) )
-                    str += separator + field.getType().getName() + " " + field.getName();
+                {
+                    str += separator + field.getType().getName() + " "
+                        + field.getName();
+                }
                 else
-                    str += separator + field.getType().getName() + " " + field.getName() + ":"
-                        + field.get( this );
+                {
+                    str += separator + field.getType().getName() + " "
+                        + field.getName() + ":" + field.get( this );
+                }
             }
             catch ( IllegalAccessException ex )
             {

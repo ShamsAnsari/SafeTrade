@@ -14,10 +14,6 @@ import java.lang.reflect.*;
  *
  * @author Sources: none
  */
-/**
- * @author Shams
- *
- */
 public class TradeOrder
 {
     private Trader trader;
@@ -41,8 +37,12 @@ public class TradeOrder
      * @param buyOrder
      *            - BuyORder
      * @param marketOrder
+     *            boolean is market order
+     * 
      * @param numShares
+     *            the number of shares (int)
      * @param price
+     *            the price of the stock(double)
      */
     public TradeOrder(
         Trader trader,
@@ -166,8 +166,8 @@ public class TradeOrder
         {
             try
             {
-                str += separator + field.getType().getName() + " " + field.getName() + ":"
-                    + field.get( this );
+                str += separator + field.getType().getName() + " "
+                    + field.getName() + ":" + field.get( this );
             }
             catch ( IllegalAccessException ex )
             {

@@ -67,7 +67,7 @@ public class Brokerage implements Login
         }
         if ( traders.containsKey( name ) )
         {
-            return -1;
+            return -3;
         }
 
         traders.put( name, new Trader( this, name, password ) );
@@ -106,13 +106,12 @@ public class Brokerage implements Login
         {
             return -3;
         }
-
         if ( !trader.hasMessages() )
         {
             trader.receiveMessage( "Welcome to SafeTrade!" );
         }
 
-        trader.openWindow(); 
+        trader.openWindow();
         loggedTraders.add( trader );
         return 0;
     }
@@ -137,10 +136,10 @@ public class Brokerage implements Login
      * Requests a quote for a given stock from the stock exachange and passes it
      * along to the trader by calling trader's receiveMessage method.
      * 
-     * @param symbol-
+     * @param symbol
      *            the stock symbol.
-     * @param trader-
-     *            the stock symbol.
+     * @param trader
+     *            the Trader .
      */
     public void getQuote( String symbol, Trader trader )
     {
@@ -153,11 +152,14 @@ public class Brokerage implements Login
      * Places an order at the stock exchange.
      * 
      * @param order
-     *            - an order to be placed at the stock exchange.
+     *            an order to be placed at the stock exchange.
      */
     public void placeOrder( TradeOrder order )
     {
-        exchange.placeOrder( order );
+        if ( order != null )
+        {
+            exchange.placeOrder( order );
+        }
 
     }
 
@@ -165,18 +167,33 @@ public class Brokerage implements Login
     //
     // The following are for test purposes only
     //
+    /**
+     * Returns traders map
+     * 
+     * @return gets the trader map
+     */
     protected Map<String, Trader> getTraders()
     {
         return traders;
     }
 
 
+    /**
+     * gets the set of logged in trader
+     * 
+     * @return loggedTraders
+     */
     protected Set<Trader> getLoggedTraders()
     {
         return loggedTraders;
     }
 
 
+    /**
+     * returns the stockexchange
+     * 
+     * @return loggedTrader
+     */
     protected StockExchange getExchange()
     {
         return exchange;

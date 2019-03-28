@@ -1,5 +1,6 @@
 import javax.swing.*;
 
+
 /**
  * The main class for the <i>SafeTrade</i> application.
  */

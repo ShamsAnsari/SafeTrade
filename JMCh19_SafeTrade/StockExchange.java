@@ -23,6 +23,9 @@ public class StockExchange
     private Map<String, Stock> listedStocks;
 
 
+    /**
+     * contructor, inits listedStock to a hashmaps
+     */
     public StockExchange()
     {
         listedStocks = new HashMap<String, Stock>();
@@ -37,6 +40,8 @@ public class StockExchange
      * highest price in a buy order (or "market") and the number of shares in it
      * (or "none" if there are no buy orders).
      * 
+     * @param symbol
+     *            stock symbol
      * @return the quote for this stock.
      */
     public String getQuote( String symbol )
@@ -63,7 +68,7 @@ public class StockExchange
      */
     public void listStock( String symbol, String name, double price )
     {
-        listedStocks.put(  symbol, new Stock( symbol, name, price ) );
+        listedStocks.put( symbol, new Stock( symbol, name, price ) );
     }
 
 
@@ -76,12 +81,23 @@ public class StockExchange
      */
     public void placeOrder( TradeOrder order )
     {
-        listedStocks.get( order.getSymbol() ).placeOrder( order );
+
+        Stock stock = listedStocks.get( order.getSymbol() );
+        if ( stock != null )
+        {
+            stock.placeOrder( order );
+        }
+
     }
 
 
     // The following are for test purposes only
     //
+    /**
+     * returns listedStocks
+     * 
+     * @return listed stocks
+     */
     protected Map<String, Stock> getListedStocks()
     {
         return listedStocks;

@@ -18,17 +18,23 @@ import java.text.DecimalFormat;
  */
 public class Stock
 {
-    public static DecimalFormat money = new DecimalFormat( "0.00" );
+    private static DecimalFormat money = new DecimalFormat( "0.00" );
 
     private String stockSymbol;
 
     private String companyName;
 
-    private double loPrice, hiPrice, lastPrice;
+    private double loPrice;
+
+    private double hiPrice;
+
+    private double lastPrice;
 
     private int volume;
 
-    private PriorityQueue<TradeOrder> buyOrders, sellOrders;
+    private PriorityQueue<TradeOrder> buyOrders;
+
+    private PriorityQueue<TradeOrder> sellOrders;
 
 
     /**
@@ -52,7 +58,9 @@ public class Stock
 
         this.stockSymbol = stockSymbol;
         this.companyName = companyName;
-        lastPrice = loPrice = hiPrice = startingPrice;
+        lastPrice = startingPrice;
+        loPrice = startingPrice;
+        hiPrice = startingPrice;
         volume = 0;
         sellOrders = new PriorityQueue<TradeOrder>( new PriceComparator() );
 
@@ -74,14 +82,15 @@ public class Stock
     public String getQuote()
     {
         // Line2
-        String lastPrice = money.format( this.lastPrice );
-        String hiPrice = money.format( this.hiPrice );
-        String loPrice = money.format( this.loPrice );
+        String lastPriceMETHOD = money.format( this.lastPrice );
+        String hiPriceMETHOD = money.format( this.hiPrice );
+        String loPriceMETHOD = money.format( this.loPrice );
 
         // Line3
         String ask;
         if ( sellOrders.isEmpty() )
         {
+
             ask = "Ask: none";
         }
         else
@@ -102,8 +111,8 @@ public class Stock
         }
 
         String line1 = companyName + " (" + stockSymbol + ")";
-        String line2 = "Price: " + lastPrice + "  hi: " + hiPrice + "  lo: "
-            + loPrice + "  vol: " + volume;
+        String line2 = "Price: " + lastPriceMETHOD + "  hi: " + hiPriceMETHOD
+            + "  lo: " + loPriceMETHOD + "  vol: " + volume;
         String line3 = ask + "  " + bid;
 
         String quote = line1 + "\n" + line2 + "\n" + line3;
@@ -133,11 +142,11 @@ public class Stock
     @SuppressWarnings("deprecation")
     protected void executeOrders()
     {
-//        System.out.println( "stock.executeOrders 1" );
+        // System.out.println( "stock.executeOrders 1" );
 
         while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
-//            System.out.println( "stock.executeOrders 2" );
+            // System.out.println( "stock.executeOrders 2" );
 
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
@@ -159,7 +168,7 @@ public class Stock
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice < sellOrderPrice ) )
             {
-//                 System.out.println( "stock.executeOrders 3" );
+                // System.out.println( "stock.executeOrders 3" );
                 break;
             }
             /*
@@ -168,7 +177,7 @@ public class Stock
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
                 && ( sellOrderPrice > lastPrice ) )
             {
-//                System.out.println( "stock.executeOrders 4" );
+                // System.out.println( "stock.executeOrders 4" );
                 break;
             }
             /*
@@ -177,11 +186,11 @@ public class Stock
             else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
                 && ( buyOrderPrice < lastPrice ) )
             {
-//                 System.out.println( "stock.executeOrders 5" );
+                // System.out.println( "stock.executeOrders 5" );
                 break;
             }
 
-//            System.out.println( "stock.executeOrders 6" );
+            // System.out.println( "stock.executeOrders 6" );
             /*
              * If the seller wants to sell at a certain price and the buy wants
              * to buy at a certain price. Then checks if the buyers' price is
@@ -190,7 +199,7 @@ public class Stock
              * selling price. Executes the order at the seller's price.
              * 
              */
-             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
+            if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
                 execHelper( sharesSell,
@@ -247,8 +256,6 @@ public class Stock
                     sellTrader,
                     buyTrader );
             }
-           
-           
 
         }
 
@@ -369,7 +376,7 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );// CORRECTLY WORKING
+            order.getTrader().receiveMessage( message );
         }
         if ( order.isSell() )
         {
@@ -389,9 +396,10 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );// WORKING CORRECTLY
+            order.getTrader().receiveMessage( message );
 
         }
+        order.getTrader().receiveMessage( message );
         this.executeOrders();
     }
 
@@ -400,54 +408,98 @@ public class Stock
     // The following are for test purposes only
     //
 
+    /**
+     * Gets the stock symbol
+     * 
+     * @return returns the stock
+     */
     protected String getStockSymbol()
     {
         return stockSymbol;
     }
 
 
+    /**
+     * gets the company
+     * 
+     * @return return the company
+     */
     protected String getCompanyName()
     {
         return companyName;
     }
 
 
+    /**
+     * gets the lo price
+     * 
+     * @return the lo price
+     */
     protected double getLoPrice()
     {
         return loPrice;
     }
 
 
+    /**
+     * get the hi price
+     * 
+     * @return returns the hi price
+     * 
+     */
     protected double getHiPrice()
     {
         return hiPrice;
     }
 
 
+    /**
+     * gets the price
+     * 
+     * @return returns the last price
+     */
     protected double getLastPrice()
     {
         return lastPrice;
     }
 
 
+    /**
+     * gets the volume
+     * 
+     * @return returns the volume
+     */
     protected int getVolume()
     {
         return volume;
     }
 
 
+    /**
+     * returns the buy order queue
+     * 
+     * @return buy order
+     */
     protected PriorityQueue<TradeOrder> getBuyOrders()
     {
         return buyOrders;
     }
 
 
+    /**
+     * gets sell orders
+     * 
+     * @return returns the sell order
+     */
     protected PriorityQueue<TradeOrder> getSellOrders()
     {
         return sellOrders;
     }
 
 
+    /**
+     * clears the queue
+     */
     protected void clearQueues()
     {
         sellOrders.clear();
