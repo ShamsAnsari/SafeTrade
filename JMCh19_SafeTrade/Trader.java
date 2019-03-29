@@ -95,14 +95,11 @@ public class Trader implements Comparable<Trader>
     public boolean equals( Object other )
     {
 
-        System.out.println( "first" );
         if ( !( other instanceof Trader ) )
         {
-            System.out.println( "if not inst branch" );
             throw new ClassCastException();
         }
 
-        System.out.println( "default" );
         return ( (Trader)other ).screenName.equalsIgnoreCase( this.screenName );
 
     }

@@ -357,7 +357,11 @@ public class Stock
     public void placeOrder( TradeOrder order )
     {
 
-        String message = "ERROR: Stock.java --> placeOrder";
+        if ( order == null )
+        {
+            return;
+        }
+        String message = " ";
 
         if ( order.isBuy() )
         {
@@ -376,7 +380,7 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );
+            // order.getTrader().receiveMessage( message );
         }
         if ( order.isSell() )
         {
@@ -396,8 +400,7 @@ public class Stock
                     + companyName + ")\n" + order.getShares()
                     + " shares at market";
             }
-            order.getTrader().receiveMessage( message );
-
+            // order.getTrader().receiveMessage( message );
         }
         order.getTrader().receiveMessage( message );
         this.executeOrders();

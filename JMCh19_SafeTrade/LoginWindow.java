@@ -76,7 +76,9 @@ public class LoginWindow extends JFrame
         public void actionPerformed( ActionEvent e )
         {
             String name = nameField.getText().trim().toLowerCase();
-            String password = ( new String( passwordField.getPassword() ) ).trim().toLowerCase();
+            String password = ( new String( passwordField.getPassword() ) )
+                .trim()
+                .toLowerCase();
             tryLogin( name, password );
             nameField.setText( "" );
             passwordField.setText( "" );
@@ -123,11 +125,14 @@ public class LoginWindow extends JFrame
 
         private boolean registered()
         {
-            JLabel regNameLabel = new JLabel( "Login name (4-10 chars):", JLabel.RIGHT );
+            JLabel regNameLabel = new JLabel( "Login name (4-10 chars):",
+                JLabel.RIGHT );
             JTextField regNameField = new JTextField( 20 );
-            JLabel regPasswordLabel = new JLabel( "Password (2-10 chars):", JLabel.RIGHT );
+            JLabel regPasswordLabel = new JLabel( "Password (2-10 chars):",
+                JLabel.RIGHT );
             JPasswordField regPasswordField = new JPasswordField( 20 );
-            JLabel regPasswordLabel2 = new JLabel( "Confirm password:", JLabel.RIGHT );
+            JLabel regPasswordLabel2 = new JLabel( "Confirm password:",
+                JLabel.RIGHT );
             JPasswordField regPasswordField2 = new JPasswordField( 20 );
 
             JPanel fieldsPanel = new JPanel();
@@ -153,8 +158,11 @@ public class LoginWindow extends JFrame
                 return true; // User pressed "Cancel"
 
             String name = regNameField.getText().trim().toLowerCase();
-            String password = ( new String( regPasswordField.getPassword() ) ).trim().toLowerCase();
-            String password2 = ( new String( regPasswordField2.getPassword() ) ).trim()
+            String password = ( new String( regPasswordField.getPassword() ) )
+                .trim()
+                .toLowerCase();
+            String password2 = ( new String( regPasswordField2.getPassword() ) )
+                .trim()
                 .toLowerCase();
 
             String errorMsg = "";
