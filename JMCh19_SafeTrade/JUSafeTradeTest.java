@@ -490,7 +490,7 @@ public class JUSafeTradeTest
             price );
         Clare.placeOrder( nullOrder );
         assertFalse( Clare.hasMessages() );
-       // System.out.println( Clare.mailbox().remove() );
+        // System.out.println( Clare.mailbox().remove() );
         assertFalse( Clare.hasMessages() );
 
     }

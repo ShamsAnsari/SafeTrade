@@ -1,12 +1,12 @@
-import java.awt.*;
+/*import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 
-/**
+*//**
  * Provides GUI for a trader.
- */
+ *//*
 public class TraderWindow extends JFrame implements ActionListener
 {
     private static final String PROMPT = ">> ";
@@ -22,12 +22,12 @@ public class TraderWindow extends JFrame implements ActionListener
     private JTextArea msgArea;
 
 
-    /**
+    *//**
      * Constructs a new trading window for a trader.
      * 
      * @param trader
      *            a trader that will own this window.
-     */
+     *//*
     public TraderWindow( Trader trader )
     {
         super( trader.getName() );
@@ -208,24 +208,24 @@ public class TraderWindow extends JFrame implements ActionListener
     }
 
 
-    /**
+    *//**
      * Displays a message in this window's text area.
      * 
      * @param msg
      *            the message to be displayed.
-     */
+     *//*
     public void showMessage( String msg )
     {
         msgArea.append( msg + "\n\n" );
     }
 
 
-    /**
+    *//**
      * Processes GUI events in this window.
      * 
      * @param e
      *            an event.
-     */
+     *//*
     public void actionPerformed( ActionEvent e )
     {
         AbstractButton b = (AbstractButton)e.getSource();
@@ -351,18 +351,18 @@ public class TraderWindow extends JFrame implements ActionListener
         myTrader.placeOrder( tradeOrder );
     }
 }
+*/
+// Provides stub TraderWindow for a trader for testing.
+ public class TraderWindow
+ {
+ //private Trader myTrader;
 
-//// Provides stub TraderWindow for a trader for testing.
-// public class TraderWindow
-// {
-// //private Trader myTrader;
-//
-// public TraderWindow( Trader trader )
-// {
-// //myTrader = trader;
-// }
-//
-// public void showMessage( String msg )
-// {
-// }
-// }
+    public TraderWindow( Trader trader )
+ {
+ //myTrader = trader;
+ }
+
+ public void showMessage( String msg )
+ {
+ }
+ }
