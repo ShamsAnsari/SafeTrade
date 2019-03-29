@@ -357,7 +357,7 @@ public class Stock
     public void placeOrder( TradeOrder order )
     {
 
-        if ( order == null )
+        if ( order.getTrader() == null )
         {
             return;
         }

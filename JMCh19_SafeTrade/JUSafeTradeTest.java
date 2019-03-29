@@ -442,7 +442,7 @@ public class JUSafeTradeTest
 
 
     @Test
-    public void traderPlaceOrderTest()
+    public void traderPlaceOrderTest_OVERALL_PLACEORDER_TEST()
     {
 
         StockExchange NYSE = new StockExchange();
@@ -479,6 +479,18 @@ public class JUSafeTradeTest
         NYSE.placeOrder( order );
         assertTrue( Clare.hasMessages() );
         System.out.println( Clare.mailbox().remove() );
+        assertFalse( Clare.hasMessages() );
+
+        // Null Order
+        TradeOrder nullOrder = new TradeOrder( null,
+            "AAPL",
+            buyOrder,
+            marketOrder,
+            numShares,
+            price );
+        Clare.placeOrder( nullOrder );
+        assertFalse( Clare.hasMessages() );
+       // System.out.println( Clare.mailbox().remove() );
         assertFalse( Clare.hasMessages() );
 
     }
