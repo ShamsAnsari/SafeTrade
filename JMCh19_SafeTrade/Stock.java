@@ -142,11 +142,9 @@ public class Stock
     @SuppressWarnings("deprecation")
     protected void executeOrders()
     {
-        // System.out.println( "stock.executeOrders 1" );
 
         while ( !buyOrders.isEmpty() && !sellOrders.isEmpty() )
         {
-            // System.out.println( "stock.executeOrders 2" );
 
             TradeOrder sellOrder = sellOrders.peek();
             TradeOrder buyOrder = buyOrders.peek();
@@ -162,43 +160,12 @@ public class Stock
             int sharesSell = sellOrder.getShares();
             int sharesBuy = buyOrder.getShares();
 
-            /*
-             * This statement prevents an infinite loop
-             */
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice < sellOrderPrice ) )
             {
-                // System.out.println( "stock.executeOrders 3" );
-                break;
-            }
-            /*
-             * This statement prevents an infinite loop
-             */
-            else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
-                && ( sellOrderPrice > lastPrice ) )
-            {
-                // System.out.println( "stock.executeOrders 4" );
-                break;
-            }
-            /*
-             * This statement prevents an infinite loop
-             */
-            else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
-                && ( buyOrderPrice < lastPrice ) )
-            {
-                // System.out.println( "stock.executeOrders 5" );
-                break;
+                return;
             }
 
-            // System.out.println( "stock.executeOrders 6" );
-            /*
-             * If the seller wants to sell at a certain price and the buy wants
-             * to buy at a certain price. Then checks if the buyers' price is
-             * greater than than the sellers' price. Because a sale can only
-             * happen if the buying price is greater than or equal to the
-             * selling price. Executes the order at the seller's price.
-             * 
-             */
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
@@ -208,16 +175,8 @@ public class Stock
                     sellTrader,
                     buyTrader );
             }
-            /*
-             * If the seller wants to sell at a certain price and the buyer
-             * wants to sell at the market price("last sale price"). Then checks
-             * that the selling price is lower than or equal the market price.
-             * Because the sale can only be made if the buying price is greater
-             * than or equal to the selling price. Executes the order at the
-             * seller's price
-             */
-            else if ( ( sellOrder.isLimit() && buyOrder.isMarket() )
-                && ( sellOrderPrice <= lastPrice ) )
+
+            else if ( ( sellOrder.isLimit() && buyOrder.isMarket() ) )
             {
 
                 execHelper( sharesSell,
@@ -226,14 +185,8 @@ public class Stock
                     sellTrader,
                     buyTrader );
             }
-            /*
-             * If the seller wants to sell at market price and the buyer wants
-             * to buy at a certain price. Then checks if the buying price is
-             * greater than or equal to the lastPrice, which is the market
-             * price. Executes the order at the buyer's price.
-             */
-            else if ( ( sellOrder.isMarket() && buyOrder.isLimit() )
-                && ( buyOrderPrice >= lastPrice ) )
+
+            else if ( ( sellOrder.isMarket() && buyOrder.isLimit() ) )
             {
 
                 execHelper( sharesSell,
@@ -243,10 +196,7 @@ public class Stock
                     buyTrader );
 
             }
-            /*
-             * If the seller wants to sell at the market price and the buyer
-             * wants to buy at the market. Executes the order at the last price.
-             */
+
             else if ( sellOrder.isMarket() && buyOrder.isMarket() )
             {
 
@@ -331,7 +281,7 @@ public class Stock
         // lastPrice = sellOrder.getPrice();
         // volume += smallerShares;
         loPrice = ( loPrice > sellingPrice ) ? sellingPrice : loPrice;
-        hiPrice = ( loPrice < sellingPrice ) ? sellingPrice : loPrice;
+        hiPrice = ( hiPrice < sellingPrice ) ? sellingPrice : hiPrice;
 
         // Sends a messages both traders
         sellTrader.receiveMessage(
@@ -361,7 +311,7 @@ public class Stock
         {
             return;
         }
-        String message = " ";
+        String message = order.getSymbol() + " not found";
 
         if ( order.isBuy() )
         {

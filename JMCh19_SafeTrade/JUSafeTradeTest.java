@@ -493,6 +493,18 @@ public class JUSafeTradeTest
         // System.out.println( Clare.mailbox().remove() );
         assertFalse( Clare.hasMessages() );
 
+        // Stock doesnt Exist
+        TradeOrder nonExist = new TradeOrder( Clare,
+            "GAAP",
+            buyOrder,
+            marketOrder,
+            numShares,
+            price );
+        Clare.placeOrder( nonExist );
+        assertTrue( Clare.hasMessages() );
+        System.out.println( Clare.mailbox().remove() );
+        assertFalse( Clare.hasMessages() );
+
     }
 
 
@@ -681,43 +693,102 @@ public class JUSafeTradeTest
     @Test
     public void stock_executeOrders_LL_Test()
     {
-        GGGL.clearQueues();
-        TradeOrder tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
-            symbol,
+        // Two Limit orders
+        StockExchange NYSE = new StockExchange();
+        Brokerage MorganStanley = new Brokerage( NYSE );
+        NYSE.listStock( "AAPL", "Apple", 190 );
+        Trader tommy = new Trader( MorganStanley, "Tommy", "Pass" );
+        Trader philbert = new Trader( MorganStanley, "Philbert", "pass" );
+
+        // Buy order and sell order price is the same
+        TradeOrder buyOrderSame = new TradeOrder( tommy,
+            "AAPL",
             buyOrder,
-            false,
+            !marketOrder,
             numShares,
             price );
-        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            false, // why does covered instructions go down if I change this to
-                   // false, instead of !BuyOrder.
-            false,
+
+        TradeOrder sellOrderSame = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            !marketOrder,
+            numShares,
+            price );
+
+        MorganStanley.placeOrder( buyOrderSame );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderSame );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().remove() );
+
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
+
+        // Buy order price is greater than sell order price
+        TradeOrder buyOrderGreater = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            !marketOrder,
             numShares,
             price + 1.0 );
-        GGGL.placeOrder( tbl );
-        GGGL.placeOrder( tsl );
 
-        assertEquals( GGGL.getSellOrders().size(), 1 );
-        assertEquals( GGGL.getBuyOrders().size(), 1 );
+        TradeOrder sellOrderLower = new TradeOrder( philbert,
+            "AAPL",
 
-        GGGL.clearQueues();
-        tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            false, // why does covered instructions go down if I change this to
-                   // false, instead of !BuyOrder.
-            false,
+            !buyOrder,
+            !marketOrder,
             numShares,
             price );
 
-        GGGL.placeOrder( tbl );
-        GGGL.placeOrder( tsl );
-        assertEquals( GGGL.getSellOrders().size(), 0 );
-        assertEquals( GGGL.getBuyOrders().size(), 0 );
+        MorganStanley.placeOrder( buyOrderGreater );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderLower );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().remove() );
 
-        GGGL.placeOrder( tsl );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
 
-        GGGL.clearQueues();
+        // Buy order price is lower than sell order price
+        TradeOrder buyOrderLower = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            !marketOrder,
+            numShares,
+            price );
+
+        TradeOrder sellOrderGreater = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            !marketOrder,
+            numShares,
+            price + 1 );
+
+        MorganStanley.placeOrder( buyOrderLower );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderGreater );
+        assertNotNull( philbert.mailbox().remove() );
+        // assertNotNull( tommy.mailbox().remove() );
+        // assertNull( philbert.mailbox().remove() );
+
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            1 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            1 );
 
     }
 
@@ -725,26 +796,41 @@ public class JUSafeTradeTest
     @Test
     public void stock_executeOrders_MM_Test()
     {
-        GGGL.clearQueues();
-        TradeOrder tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
-            symbol,
+        StockExchange NYSE = new StockExchange();
+        Brokerage MorganStanley = new Brokerage( NYSE );
+        NYSE.listStock( "AAPL", "Apple", 190.0 );
+        Trader tommy = new Trader( MorganStanley, "Tommy", "Pass" );
+        Trader philbert = new Trader( MorganStanley, "Philbert", "pass" );
+
+        // Buy order and sell order price is the same
+        TradeOrder buyOrderSame = new TradeOrder( tommy,
+            "AAPL",
             buyOrder,
-            true,
+            marketOrder,
             numShares,
             price );
-        TradeOrder tsm = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            false, // why does covered instructions go down if I change this to
-                   // false, instead of !BuyOrder.
-            true,
+
+        TradeOrder sellOrderSame = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            marketOrder,
             numShares,
-            price + 1.0 );
+            price );
 
-        GGGL.placeOrder( tbm );
-        GGGL.placeOrder( tsm );
+        MorganStanley.placeOrder( buyOrderSame );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderSame );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().remove() );
 
-        assertEquals( GGGL.getBuyOrders().size(), 0 );
-        assertEquals( GGGL.getSellOrders().size(), 0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
 
     }
 
@@ -752,39 +838,92 @@ public class JUSafeTradeTest
     @Test
     public void stock_executeOrders_LM_Test()
     {
-        GGGL.clearQueues();
-        TradeOrder tbm = new TradeOrder( new Trader( null, "Tommy", "1234" ),
-            symbol,
+        // Sell is limit buy is market
+        StockExchange NYSE = new StockExchange();
+        Brokerage MorganStanley = new Brokerage( NYSE );
+        NYSE.listStock( "AAPL", "Apple", 190.0 );
+        Trader tommy = new Trader( MorganStanley, "Tommy", "Pass" );
+        Trader philbert = new Trader( MorganStanley, "Philbert", "pass" );
+
+        // Buy order and sell order price is the same
+        TradeOrder buyOrderSame = new TradeOrder( tommy,
+            "AAPL",
             buyOrder,
-            true,
+            marketOrder,
             numShares,
             price );
-        TradeOrder tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            !buyOrder, // why does covered instructions go down if I change this
-                       // to false, instead of !BuyOrder.
-            false,
-            numShares,
-            price + 1.0 );
-        GGGL.placeOrder( tbm );
-        GGGL.placeOrder( tsl );
 
-        assertEquals( GGGL.getBuyOrders().size(), 1 );
-        assertEquals( GGGL.getSellOrders().size(), 1 );
+        TradeOrder sellOrderSame = new TradeOrder( philbert,
+            "AAPL",
 
-        GGGL.clearQueues();
-        tsl = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            !buyOrder, // why does covered instructions go down if I change this
-                       // to false, instead of !BuyOrder.
-            false,
+            !buyOrder,
+            !marketOrder,
             numShares,
-            price - 1.0 );
-        GGGL.placeOrder( tbm );
-        GGGL.placeOrder( tsl );
-        assertEquals( GGGL.getBuyOrders().size(), 0 );
-        assertEquals( GGGL.getSellOrders().size(), 0 );
-        GGGL.clearQueues();
+            price );
+
+        MorganStanley.placeOrder( buyOrderSame );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderSame );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().remove() );
+
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
+
+        // Buy order price is greater than sell order price
+        TradeOrder buyOrderGreater = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            marketOrder,
+            numShares,
+            price );// in market this 190
+
+        TradeOrder sellOrderLower = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            !marketOrder,
+            numShares,
+            190 - 1.0 );
+
+        MorganStanley.placeOrder( buyOrderGreater );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderLower );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().peek() );
+        System.out.println( philbert.mailbox().remove() );
+
+        // Buy order price is Lower than sell order price
+        TradeOrder buyOrderLower = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            marketOrder,
+            numShares,
+            price - 10 );// in market this 190
+
+        TradeOrder sellOrderGreater = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            !marketOrder,
+            numShares,
+            190 + 5.0 );
+
+        // This should p
+
+        MorganStanley.placeOrder( buyOrderLower );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderGreater );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().peek() );
+        System.out.println( philbert.mailbox().remove() );
 
     }
 
@@ -792,39 +931,43 @@ public class JUSafeTradeTest
     @Test
     public void stock_executeOrders_ML_Test()
     {
-        GGGL.clearQueues();
-        TradeOrder tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
-            symbol,
-            true,
-            false,
-            numShares,
-            price - 1.0 );
-        TradeOrder tsm = new TradeOrder( new Trader( null, "Philbert", "1234" ),
-            symbol,
-            false, // why does covered instructions go down if I change this to
-                   // false, instead of !BuyOrder.
-            true,
+
+        // Sell is market buy is limit
+        StockExchange NYSE = new StockExchange();
+        Brokerage MorganStanley = new Brokerage( NYSE );
+        NYSE.listStock( "AAPL", "Apple", 190.0 );
+        Trader tommy = new Trader( MorganStanley, "Tommy", "Pass" );
+        Trader philbert = new Trader( MorganStanley, "Philbert", "pass" );
+
+        // Buy order and sell order price is the same
+        TradeOrder buyOrderSame = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            marketOrder,
             numShares,
             price );
-        GGGL.placeOrder( tbl );
-        GGGL.placeOrder( tsm );
 
-        assertEquals( GGGL.getBuyOrders().size(), 1 );
-        assertEquals( GGGL.getSellOrders().size(), 1 );
+        TradeOrder sellOrderSame = new TradeOrder( philbert,
+            "AAPL",
 
-        GGGL.clearQueues();
-
-        tbl = new TradeOrder( new Trader( null, "Tommy", "1234" ),
-            symbol,
-            true,
-            false,
+            !buyOrder,
+            !marketOrder,
             numShares,
-            price + 1.0 );
-        GGGL.placeOrder( tbl );
-        GGGL.placeOrder( tsm );
+            price );
 
-        assertEquals( GGGL.getBuyOrders().size(), 0 );
-        assertEquals( GGGL.getSellOrders().size(), 0 );
+        MorganStanley.placeOrder( buyOrderSame );
+        assertNotNull( tommy.mailbox().remove() );
+        MorganStanley.placeOrder( sellOrderSame );
+        assertNotNull( philbert.mailbox().remove() );
+        assertNotNull( tommy.mailbox().remove() );
+        assertNotNull( philbert.mailbox().remove() );
+
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
 
     }
 
@@ -870,9 +1013,90 @@ public class JUSafeTradeTest
     }
 
 
+    @Test
+    public void stock_Test()
+    {
+        // probelm at buy murket sell limit => webcat mailbox is empty
+
+        StockExchange NYSE = new StockExchange();
+        Brokerage MS = new Brokerage( NYSE );
+        Trader phil = new Trader( MS, "Philbert", "1234" );
+        Trader tommy = new Trader( MS, "Tommy", "1234" );
+        NYSE.listStock( "AAPL", "Apple", 189.29 );
+        TradeOrder tsl = new TradeOrder( phil,
+            "AAPL",
+            !buyOrder, // why does covered instructions go down if I change this
+                       // to false, instead of !BuyOrder.
+            !true,
+            numShares,
+            price );
+        TradeOrder tbm = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            true,
+            numShares,
+            price + 1 );
+
+        MS.placeOrder( tsl );
+        assertTrue( phil.hasMessages() );
+        System.out.println( " Phil's order msg: " + phil.mailbox().remove() );
+        MS.placeOrder( tbm );
+        assertTrue( phil.hasMessages() );
+        System.out
+            .println( "Phil's executed order msg: " + phil.mailbox().remove() );
+        assertTrue( tommy.hasMessages() );
+        System.out.println( "tommy's order msg: " + tommy.mailbox().remove() );
+        assertTrue( tommy.hasMessages() );
+        System.out.println(
+            "tommy's executed order msg: " + tommy.mailbox().remove() );
+
+    }
     // =========================================================================
     // *****************************BROKERAGE************************************
     // =========================================================================
+
+
+    @Test
+    public void extraTests()
+    {
+
+        // Two Limit orders
+        StockExchange NYSE = new StockExchange();
+        Brokerage MorganStanley = new Brokerage( NYSE );
+        NYSE.listStock( "AAPL", "Apple", 190 );
+        Trader tommy = new Trader( MorganStanley, "Tommy", "Pass" );
+        Trader philbert = new Trader( MorganStanley, "Philbert", "pass" );
+
+        // Buy order and sell order price is the same
+        TradeOrder buyOrderSame = new TradeOrder( tommy,
+            "AAPL",
+            buyOrder,
+            !marketOrder,
+            5,
+            200 );
+
+        TradeOrder sellOrderSame = new TradeOrder( philbert,
+            "AAPL",
+
+            !buyOrder,
+            marketOrder,
+            5,
+            200 );
+
+        MorganStanley.placeOrder( buyOrderSame );
+        MorganStanley.placeOrder( sellOrderSame );
+        philbert.mailbox().remove();
+        System.out.println(
+            "************\n" + philbert.mailbox().peek() + "************\n" );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getBuyOrders().size(),
+            0 );
+        assertEquals(
+            NYSE.getListedStocks().get( "AAPL" ).getSellOrders().size(),
+            0 );
+
+    }
+
 
     @Test
     public void brokeragetoString_Test()
@@ -882,7 +1106,7 @@ public class JUSafeTradeTest
     }
 
     // =========================================================================
-    // =========================================================================
+    // ************************************************************************
     // =========================================================================
 
     // // Remove block comment below to run JUnit test in console

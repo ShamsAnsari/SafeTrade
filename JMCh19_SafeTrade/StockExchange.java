@@ -83,6 +83,11 @@ public class StockExchange
     {
 
         Stock stock = listedStocks.get( order.getSymbol() );
+        if ( stock == null )
+        {
+            order.getTrader()
+                .receiveMessage( order.getSymbol() + " not found" );
+        }
         if ( stock != null )
         {
             stock.placeOrder( order );
