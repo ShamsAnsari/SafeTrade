@@ -161,12 +161,6 @@ public class Stock
             int sharesBuy = buyOrder.getShares();
 
             if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
-                && ( buyOrderPrice < sellOrderPrice ) )
-            {
-                return;
-            }
-
-            if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
                 && ( buyOrderPrice >= sellOrderPrice ) )
             {
                 execHelper( sharesSell,
@@ -205,6 +199,15 @@ public class Stock
                     lastPrice,
                     sellTrader,
                     buyTrader );
+            }
+            else if ( ( sellOrder.isLimit() && buyOrder.isLimit() )
+                && ( buyOrderPrice < sellOrderPrice ) )
+            {
+                return;
+            }
+            else
+            {
+                return;
             }
 
         }
