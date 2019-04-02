@@ -152,10 +152,8 @@ public class Stock
             Trader sellTrader = sellOrder.getTrader();
             Trader buyTrader = buyOrder.getTrader();
 
-            double sellOrderPrice = new Double(
-                money.format( sellOrder.getPrice() ) );
-            double buyOrderPrice = new Double(
-                money.format( buyOrder.getPrice() ) );
+            double sellOrderPrice = sellOrder.getPrice();
+            double buyOrderPrice = buyOrder.getPrice();
 
             int sharesSell = sellOrder.getShares();
             int sharesBuy = buyOrder.getShares();
@@ -167,7 +165,7 @@ public class Stock
                     sharesBuy,
                     sellOrderPrice,
                     sellTrader,
-                    buyTrader );
+                    buyTrader );   
             }
 
             else if ( ( sellOrder.isLimit() && buyOrder.isMarket() ) )
@@ -287,12 +285,14 @@ public class Stock
         hiPrice = ( hiPrice < sellingPrice ) ? sellingPrice : hiPrice;
 
         // Sends a messages both traders
-        sellTrader.receiveMessage(
-            "You sold: " + smallerShares + " " + stockSymbol + " at "
-                + sellingPrice + " amt " + smallerShares * sellingPrice );
-        buyTrader.receiveMessage(
-            "You bought: " + smallerShares + " " + stockSymbol + " at "
-                + sellingPrice + " amt " + smallerShares * sellingPrice );
+
+        String amt = money.format( smallerShares * sellingPrice );
+        sellTrader
+            .receiveMessage( "You sold: " + smallerShares + " " + stockSymbol
+                + " at " + money.format( sellingPrice ) + " amt " + amt );
+        buyTrader
+            .receiveMessage( "You bought: " + smallerShares + " " + stockSymbol
+                + " at " + money.format( sellingPrice ) + " amt " + amt );
 
     }
 
@@ -324,14 +324,14 @@ public class Stock
 
                 message = "New order: Buy " + order.getSymbol() + " ("
                     + companyName + ")\n" + order.getShares() + " shares at $"
-                    + order.getPrice();
+                    + money.format( order.getPrice() );
 
             }
             if ( order.isMarket() )
             {
                 message = "New order: Buy " + order.getSymbol() + " ("
                     + companyName + ")\n" + order.getShares()
-                    + " shares at market";
+                    + " shares at market"; 
             }
             // order.getTrader().receiveMessage( message );
         }
@@ -344,7 +344,7 @@ public class Stock
 
                 message = "New order: Sell " + order.getSymbol() + " ("
                     + companyName + ")\n" + order.getShares() + " shares at $"
-                    + order.getPrice();
+                    + money.format( order.getPrice() );
 
             }
             if ( order.isMarket() )

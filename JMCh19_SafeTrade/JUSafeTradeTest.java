@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
  * SafeTrade tests: TradeOrder PriceComparator Trader Brokerage StockExchange
  * Stock
  *
- * @author Elisa Yang
+ * @author Elissa Yang
  * @author Leo Shaw
  * @author Shams Ansari
  * @version TODO date
